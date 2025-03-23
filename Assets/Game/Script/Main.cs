@@ -1,33 +1,41 @@
 using Engin.Utility;
+using System;
 using UnityEngine;
 public class Main : MonoBehaviour, IMain
 {
-    private Interaction Interact = new Interaction();
+
+
+    private Interaction _interact;
+
+    [SerializeField] private GridView gridView;
+
+    public GridController GridController { get; private set; }
+
+
     public void StartGame()
     {
-        Interact.Init();
+
+        _interact = new Interaction();
+        _interact.Init();
 
         GameData<Main>.Boot = this;
 
-        var Ready = Interact.FindAll<IEnterInReady>();
-        var Start = Interact.FindAll<IEnterInStart>();
+        GridController = new GridController(new(10, 10), 1, gridView);
+        
+        var Starts = _interact.FindAll<IEnterInStart>();
 
-        foreach (var Element in Start)
-        {
-            Element.Start();
-        }
-
-        foreach (var Element in Ready)
+        foreach (var Element in Starts)
         {
             Element.Start();
         }
 
         GameData<Main>.IsStartGame = true;
+        
     }
 
     public void UpdateGame(float TimeDelta)
     {
-        var Update = Interact.FindAll<IEnterInUpdate>();
+        var Update = _interact.FindAll<IEnterInUpdate>();
         foreach (var Element in Update)
         {
             Element.Update(TimeDelta);
@@ -45,7 +53,7 @@ public class Main : MonoBehaviour, IMain
     {
         PhysicUpdateGame(Time.deltaTime);
     }
-    private void Start()
+    private void Awake()
     {
         StartGame();
     }

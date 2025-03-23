@@ -6,15 +6,10 @@ using UnityEngine;
 
 public abstract class BaseInteraction 
 {
-    public Priority PriorityInteraction { get => Priority.Medium; set { } }
+    public virtual Priority PriorityInteraction { get => Priority.Medium; }
 }
 
 interface IEnterInStart
-{
-    public void Start();
-}
-
-interface IEnterInReady
 {
     public void Start();
 }
