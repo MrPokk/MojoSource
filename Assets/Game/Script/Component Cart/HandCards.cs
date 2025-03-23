@@ -7,7 +7,6 @@ public class HandCards : MonoBehaviour
     private List<BaseCard> _carts = new List<BaseCard>();
     private float _spacing;
     
-    
     private void Update()
     {
         SetPoseTile();
