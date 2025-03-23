@@ -9,6 +9,7 @@ public abstract class CMSEntity
     {
         T RefComponent = new(); 
         Component = RefComponent; 
+        
         return ref Component;
     }
     public abstract void RegisterComponents(params IComponent[] components);
