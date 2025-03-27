@@ -6,8 +6,10 @@ public class MouseController : BaseInteraction, IEnterInUpdate
 {
     public override Priority PriorityInteraction { get => Priority.High; }
 
-    public static event Action OnClick;
-    
+    private Vector3 _mousePose { get => GameData<Main>.Boot.MainCamera.ScreenToWorldPoint(Input.mousePosition); }
+
+    public static event Action<Vector3> OnClick;
+
     public void Update(float TimeDelta)
     {
         InputMouseClick();
@@ -16,7 +18,7 @@ public class MouseController : BaseInteraction, IEnterInUpdate
     {
         if (Input.GetMouseButtonDown(0))
         {
-            OnClick?.Invoke();
+            OnClick?.Invoke(_mousePose);
         }
     }
 }
