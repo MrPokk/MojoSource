@@ -1,36 +1,56 @@
 using System;
 using System.Collections.Generic;
 using Engin.Utility;
+using Game.CMS_Content.Card;
 
-public static class CMS
+public class CMS : BaseInteraction, IInitInMain
 {
-    private static List<CMSEntity> CMSEntities = new();
-    
-    public static void Init()
+
+    public override Priority PriorityInteraction { get => Priority.FIRST_TASK; }
+
+    private static List<CMSEntity> CMSEntities;
+
+    public void Init()
     {
+        CMSEntities = new List<CMSEntity>();
         FindAll();
+    }
+
+
+    public static T TryAddValue<T>() where T : CMSEntity, new()
+    {
+        T NewModel = new T();
+        CMSEntities.Add(NewModel);
+        
+        return NewModel;
+    }
+    
+    public static void Add<T>() where T : CMSEntity, new()
+    {
+        T NewModel = new T();
+        CMSEntities.Add(NewModel);
     }
 
     private static void FindAll()
     {
         var ListCMSEntity = ReflectionUtility.FindAllImplement<CMSEntity>();
-        foreach (var Element in ListCMSEntity) {
+        foreach (var Element in ListCMSEntity)
+        {
             CMSEntities.Add(Activator.CreateInstance(Element) as CMSEntity);
         }
     }
-    
-    public static Component GetComponent<Component>(CMSEntity Entity, out Component RefComponent) where Component: struct, IComponent
+
+    public static void TryGetComponent<CMSEntityType, ComponentType>(out ComponentType refComponent) where ComponentType : class, IComponent where CMSEntityType : CMSEntity
     {
-        foreach (var Element in Entity.Components) {
-            if (Element is Component ComponentEntity)
-                return RefComponent = ComponentEntity;
-        }
-        throw new Exception("Component not found");
+        var Entity = Get<CMSEntityType>();
+        Entity.Get<ComponentType>(out var componentType);
+        refComponent = componentType;
     }
 
     public static T Get<T>() where T : CMSEntity
     {
-        foreach (var Element in CMSEntities) {
+        foreach (var Element in CMSEntities)
+        {
             if (Element is T ElementData)
                 return ElementData;
         }
@@ -39,7 +59,8 @@ public static class CMS
     public static List<T> GetAll<T>() where T : CMSEntity
     {
         List<T> list = new List<T>();
-        foreach (var Element in CMSEntities) {
+        foreach (var Element in CMSEntities)
+        {
             if (Element is T ElementData)
                 list.Add(ElementData);
         }

@@ -1,25 +1,28 @@
 using System;
 using System.Collections.Generic;
 using Engin.Utility;
+using System.Linq;
+using Unity.VisualScripting;
+using UnityEngine;
 
 public abstract class CMSEntity
 {
-    public List<IComponent> Components { get; protected set; } = new();
-    public virtual ref T Define<T>(out T Component) where T : struct, IComponent
+    public HashSet<IComponent> Components { get; private set; } = new HashSet<IComponent>();
+    protected void Define<T>(out T component) where T : IComponent, new()
     {
-        T RefComponent = new(); 
-        Component = RefComponent; 
-        
-        return ref Component;
+        component = new T();
+        RegisterComponents(component);
     }
-    public abstract void RegisterComponents(params IComponent[] components);
-    public virtual T Get<T>(out T RefComponent) where T : struct, IComponent
+    private void RegisterComponents(params IComponent[] refComponent)
     {
-        foreach (var Element in Components) {
-            if (Element is T Component)
-                return RefComponent = Component;
-        }
+        Components.AddRange(refComponent);
+    }
 
-        throw new Exception("Component not found");
+    public void Get<T>(out T refComponent) where T : class, IComponent
+    {
+        refComponent = Components.FirstOrDefault((c) => c is T) as T;
+
+        if (refComponent == null)
+            throw new Exception("Component not found");
     }
 }

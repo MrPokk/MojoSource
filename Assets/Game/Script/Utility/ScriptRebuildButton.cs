@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using UnityEngine;
 using UnityEditor;
 
@@ -11,17 +12,17 @@ public class ScriptRebuildButton : EditorWindow
         GetWindow<ScriptRebuildButton>("Script Rebuild");
     }
 
-    void OnGUI()
+    private void OnGUI()
     {
         _clearConsole = EditorGUILayout.Toggle("Clear Console Before Rebuild", _clearConsole);
 
-        if (GUILayout.Button("Rebuild Scripts"))
-        {
-            if (_clearConsole)
-                ClearConsole();
+        if (!GUILayout.Button("Rebuild Scripts"))
+            return;
+        
+        if (_clearConsole)
+            ClearConsole();
 
-            RebuildScripts();
-        }
+        RebuildScripts();
     }
 
     private static void RebuildScripts()
@@ -29,8 +30,7 @@ public class ScriptRebuildButton : EditorWindow
         AssetDatabase.Refresh();
         Debug.Log("Scripts Rebuilt");
     }
-
-    [MenuItem("Tools/Clear Console")] // Create menu entry to clear console (for convenience)
+    
     private static void ClearConsole()
     {
         var logEntries = System.Type.GetType("UnityEditor.LogEntries,UnityEditor.dll");
@@ -38,3 +38,4 @@ public class ScriptRebuildButton : EditorWindow
         clearMethod.Invoke(null, null);
     }
 }
+#endif

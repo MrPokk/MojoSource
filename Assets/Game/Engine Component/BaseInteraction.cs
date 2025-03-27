@@ -14,6 +14,11 @@ interface IEnterInStart
     public void Start();
 }
 
+interface IInitInMain
+{
+    public void Init();
+}
+
 interface IEnterInUpdate
 {
     void Update(float TimeDelta);
