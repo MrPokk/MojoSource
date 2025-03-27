@@ -2,14 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
-using ArgumentException = System.ArgumentException;
+using Debug = UnityEngine.Debug;
 
 public class AStar
 {
     private HashSet<Vector2Int> _open;
     private HashSet<Vector2Int> _close;
+
+
+    private Dictionary<Vector2Int, Vector2Int> _closed;
 
     private GridNode _current;
 
@@ -32,24 +34,18 @@ public class AStar
         new Vector2Int(1, 1),
     };
 
-
-    public static List<Vector2Int> PathFindInGrid(Vector2Int start, Vector2Int end, GridNode[,] grid)
+    public static List<Vector2Int> TryGetPathFind(Vector2Int start, Vector2Int end, GridNode[,] grid)
     {
         if (grid == null)
             throw new ArgumentNullException($"ERROR: {nameof(grid)}");
 
         if (!GridUtility.IsWithinGrid(start, grid) || !GridUtility.IsWithinGrid(end, grid))
-        {
-            Debug.LogWarning("WARNING: start or end are not within the grid");
-            return default;
-        }
-
-        if (start != end)
-            return new AStar().Find(start, end, grid);
+            throw new WarningException("WARNING: start or end are not within the grid");
         
-        Debug.LogWarning("WARNING: start and the end match");
-        return default;
+        if (start == end)
+            throw new WarningException("WARNING: start or end are not within the grid");
 
+        return new AStar().Find(start, end, grid);
     }
 
     private List<Vector2Int> Find(Vector2Int startNode, Vector2Int endNode, GridNode[,] grid)
@@ -114,14 +110,17 @@ public class AStar
     {
         List<Vector2Int> Path = new List<Vector2Int>();
 
-        GridNode CurrentNode = GetNodeByIndex(endNodeIndex, _grid);
+        GridNode CurrentNode = GridUtility.GetNodeByIndex(endNodeIndex, _grid);
+        Path.Add(CurrentNode.Index);
 
         while (CurrentNode.IndexParent != Vector2Int.one * -1)
         {
-            GridNode CameFromNode = GetNodeByIndex(CurrentNode.IndexParent, _grid);
+            GridNode CameFromNode = GridUtility.GetNodeByIndex(CurrentNode.IndexParent, _grid);
             Path.Add(CameFromNode.Index);
             CurrentNode = CameFromNode;
         }
+
+        Path.Reverse();
 
         return Path;
     }
@@ -147,18 +146,14 @@ public class AStar
         return true;
     }
 
-    private static GridNode GetNodeByIndex(Vector2Int index, GridNode[,] grid)
-    {
-        return grid[index.x, index.y];
-    }
 
     //TODO: Возможно SorterSet Что бы сразу в список доступных нод добавлять ноды по цене FCost
     private GridNode GetLowerFCost(HashSet<Vector2Int> nodeArray)
     {
-        var IndexLowerNode = GetNodeByIndex(nodeArray.First(), _grid);
+        var IndexLowerNode = GridUtility.GetNodeByIndex(nodeArray.First(), _grid);
         foreach (var NodeIndex in nodeArray)
         {
-            var NodeElement = GetNodeByIndex(NodeIndex, _grid);
+            var NodeElement = GridUtility.GetNodeByIndex(NodeIndex, _grid);
 
             if (NodeElement.FCost < IndexLowerNode.FCost)
                 IndexLowerNode = NodeElement;

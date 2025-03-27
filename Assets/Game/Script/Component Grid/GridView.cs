@@ -20,11 +20,11 @@ public class GridView : ModelView<GridView>
         {
             for (int y = 0; y < Size.y; y++)
             {
-                Gizmos.DrawLine(GridController.Grid.GetWorldPose(new(x, y)), GridController.Grid.GetWorldPose(new(x, y + 1)));
-                Gizmos.DrawLine(GridController.Grid.GetWorldPose(new(x, y)), GridController.Grid.GetWorldPose(new(x + 1, y)));
+                Gizmos.DrawLine(GridController.Grid.ConvertingPosition(new Vector2(x, y)), GridController.Grid.ConvertingPosition(new Vector2(x, y + 1)));
+                Gizmos.DrawLine(GridController.Grid.ConvertingPosition(new Vector2(x, y)), GridController.Grid.ConvertingPosition(new Vector2(x + 1, y)));
             }
-            Gizmos.DrawLine(GridController.Grid.GetWorldPose(new(0, Size.y)), GridController.Grid.GetWorldPose(new(Size.x, Size.y)));
-            Gizmos.DrawLine(GridController.Grid.GetWorldPose(new(Size.x, 0)), GridController.Grid.GetWorldPose(new(Size.x, Size.y)));
+            Gizmos.DrawLine(GridController.Grid.ConvertingPosition(new Vector2(0, Size.y)), GridController.Grid.ConvertingPosition(new Vector2(Size.x, Size.y)));
+            Gizmos.DrawLine(GridController.Grid.ConvertingPosition(new Vector2(Size.x, 0)), GridController.Grid.ConvertingPosition(new Vector2(Size.x, Size.y)));
         }
     }
       #endif
