@@ -1,3 +1,6 @@
+using Game.CMS_Content.Card;
+using Game.Script.GlobalComponent;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,14 +11,17 @@ namespace Game.CMS_Content.Player
 
     public class EventPlayerController : MonoBehaviour
     {
+        
         private bool _isWalking = false;
         private void OnEnable()
         {
-            MouseController.OnClick += Move;
+            MouseController.OnClickDown += Move;
+            DraggableObject<BaseCardView>.ReactionOnDrop += AddCard;
         }
         private void OnDestroy()
         {
-            MouseController.OnClick -= Move;
+            MouseController.OnClickDown -= Move;
+            DraggableObject<BaseCardView>.ReactionOnDrop -= AddCard;
         }
         private void Move(Vector3 mousePosition)
         {
@@ -27,6 +33,17 @@ namespace Game.CMS_Content.Player
 
             if (Path != null && _isWalking == false)
                 StartCoroutine(MakeByStep(Path));
+        }
+        
+        private void AddCard(DraggableObject<BaseCardView> card)
+        {
+            
+            Debug.Log("TEST");
+            
+            CMS.Get<EntityPlayer>().InsideCard.Add(card as BaseCardView);
+            GameData<Main>.Boot.HandCards.Remove(card as BaseCardView);
+            
+            Debug.Log(CMS.Get<EntityPlayer>().InsideCard);
         }
 
         private IEnumerator MakeByStep(List<Vector2Int> path)

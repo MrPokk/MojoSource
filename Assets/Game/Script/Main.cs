@@ -19,8 +19,7 @@ public class Main : MonoBehaviour, IMain
     public HandCards HandCards;
 
     public Camera MainCamera { get; private set; }
-
-
+    
     public void StartGame()
     {
         _interact = new Interaction();

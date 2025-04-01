@@ -11,8 +11,7 @@ public class HandCards : MonoBehaviour
 
     [SerializeField]
     private bool _axisSwap;
-
-
+    
     [Range(0.1f, 2), SerializeField]
     private float _maxSpacing;
     [Range(1, 20), SerializeField]
