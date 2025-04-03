@@ -10,12 +10,15 @@ namespace Game.CMS_Content.Player
     {
         protected override void Init()
         {
+            
             CMS.TryGetComponent<EntityPlayer, ViewComponent>(out var viewComponent);
 
-            Vector3 PositionInGrid = GridUtility.TryGetPositionInGrid(new Vector2Int(0, 0), GameData<Main>.Boot.GridController.Grid);
+            var PositionInGrid = GridUtility.TryGetPositionInGrid(new Vector2Int(0, 0), GameData<Main>.Boot.GridController.Grid);
             PositionInGrid += (viewComponent.Prefab.transform.localScale / 2);
 
-            GameData<Main>.Boot.InstantiateCMSEntity(in viewComponent, PositionInGrid);
+            if (PositionInGrid != null)
+                GameData<Main>.Boot.InstantiateCMSEntity(in viewComponent, (Vector3)PositionInGrid);
+
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Game.CMS_Content.Player
 {
     public class EntityPlayer : CMSEntity , IContainCard
     {
-        public List<BaseCardView> InsideCard { get; set; }
+        public List<BaseCardView> InsideCard { get; set; } = new List<BaseCardView>();
         public EntityPlayer()
         {
             Define(out ViewComponent viewComponent);

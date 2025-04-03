@@ -19,23 +19,26 @@ public abstract class GridUtility
         return indexNode.x >= 0 && indexNode.x < grid.Size.x && indexNode.y >= 0 && indexNode.y < grid.Size.y;
     }
 
-    public static Vector3 TryGetPositionInGrid<T>(Vector2Int indexNode, GridModel<T> grid)
+    public static Vector3? TryGetPositionInGrid<T>(Vector2Int indexNode, GridModel<T> grid)
     {
         if (IsWithinGrid(indexNode, grid))
             return new Vector3(indexNode.x, indexNode.y, 0) * grid.CellSize + (Vector3)grid.PositionOrigin;
 
-        throw new ArgumentException("ERROR: Invalid grid position");
+        Debug.LogWarning("ERROR: Invalid grid position");
+        return null;
     }
 
-    public static Vector2Int TryGetPositionInGrid<T>(Vector3 objectPosition, GridModel<T> grid)
+    public static Vector2Int? TryGetPositionInGrid<T>(Vector3 objectPosition, GridModel<T> grid)
     {
         if (!IsWithinGrid(grid.ConvertingPosition(objectPosition), grid))
-            throw new ArgumentException("ERROR: Invalid grid position");
-        
+        {
+            Debug.LogWarning("ERROR: Invalid grid position");
+            return null;
+        }
+
         int X = Mathf.FloorToInt((objectPosition - (Vector3)grid.PositionOrigin).x / grid.CellSize);
         int Y = Mathf.FloorToInt((objectPosition - (Vector3)grid.PositionOrigin).y / grid.CellSize);
         return new Vector2Int(X, Y);
-
     }
 
 }

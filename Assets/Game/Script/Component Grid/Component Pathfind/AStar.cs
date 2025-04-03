@@ -37,13 +37,22 @@ public class AStar
     public static List<Vector2Int> TryGetPathFind(Vector2Int start, Vector2Int end, GridNode[,] grid)
     {
         if (grid == null)
-            throw new ArgumentNullException($"ERROR: {nameof(grid)}");
+        {
+            Debug.LogError($"ERROR: {nameof(grid)}");
+            return null;
+        }
 
         if (!GridUtility.IsWithinGrid(start, grid) || !GridUtility.IsWithinGrid(end, grid))
-            throw new WarningException("WARNING: start or end are not within the grid");
+        {
+            Debug.LogWarning("WARNING: start or end are not within the grid");
+            return null;
+        }
         
         if (start == end)
-            throw new WarningException("WARNING: start or end are not within the grid");
+        {
+            Debug.LogWarning("WARNING: start or end are not within the grid");
+            return null;
+        }
 
         return new AStar().Find(start, end, grid);
     }
