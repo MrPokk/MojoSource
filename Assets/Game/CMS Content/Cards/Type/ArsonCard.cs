@@ -1,14 +1,14 @@
 using Engin.Utility;
 using UnityEngine;
 
-namespace Game.CMS_Content.Card.Type
+namespace Game.CMS_Content.Cards.Type
 {
     public class ArsonCard : BaseCardModel
     {
         public ArsonCard()
         {
             Define(out ViewComponent viewComponent);
-            viewComponent.LoadModel<BaseCardView>(PathResources.PREFABS);
+            viewComponent.LoadView<BaseCardView>(PathResources.PREFABS);
 
             CardComponentBase.PriorityCardComponent.Priority = Priority.High;
             CardComponentBase.ActionCardComponent.AbilityCard = () => { Debug.Log("dssa"); };

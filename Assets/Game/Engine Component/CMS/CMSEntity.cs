@@ -7,7 +7,10 @@ using UnityEngine;
 
 public abstract class CMSEntity
 {
-    public HashSet<IComponent> Components { get; private set; } = new HashSet<IComponent>();
+    private readonly HashSet<IComponent> _components = new HashSet<IComponent>();
+
+    public Type ID { get => GetType(); }
+
     protected void Define<T>(out T component) where T : IComponent, new()
     {
         component = new T();
@@ -15,12 +18,12 @@ public abstract class CMSEntity
     }
     private void RegisterComponents(params IComponent[] refComponent)
     {
-        Components.AddRange(refComponent);
+        _components.AddRange(refComponent);
     }
 
     public void Get<T>(out T refComponent) where T : class, IComponent
     {
-        refComponent = Components.FirstOrDefault((c) => c is T) as T;
+        refComponent = _components.FirstOrDefault((c) => c is T) as T;
 
         if (refComponent == null)
             throw new Exception("Component not found");

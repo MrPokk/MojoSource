@@ -2,9 +2,9 @@ using Engin.Utility;
 using System;
 using UnityEngine;
 
-namespace Game.CMS_Content.Card
+namespace Game.CMS_Content.Cards.Components
 {
-    public class ActionCardComponent : IComponent
+    public class ActionComponent : IComponent
     {
         private Action _abilityCard;
         public Action AbilityCard {

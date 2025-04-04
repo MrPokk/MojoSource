@@ -1,5 +1,4 @@
-using Game.CMS_Content.Card;
-using System;
+using Game.CMS_Content.Cards;
 using System.Collections.Generic;
 using UnityEngine;
 public class HandCards : MonoBehaviour

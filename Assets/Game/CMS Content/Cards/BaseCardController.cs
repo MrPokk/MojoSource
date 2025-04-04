@@ -1,34 +1,24 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using Game.CMS_Content.Entity;
 using UnityEngine;
 
-namespace Game.CMS_Content.Card
+namespace Game.CMS_Content.Cards
 {
-    public class BaseCardController
+    public class BaseCardController : CMSManager
     {
-
-        private List<BaseCardModel> _loadedCards = new List<BaseCardModel>();
-
         public void GiveCardInHand<T>() where T : BaseCardModel, new()
         {
-            GameData<Main>.Boot.HandCards.Add(InitViewModel(Create<T>()));
+            SpawnEntity<T>();
         }
 
-        private T Create<T>() where T : BaseCardModel, new()
+        protected override void SpawnEntity<T>()
         {
-            var ContentRegister = CMS.TryAddValue<T>();
+            Create<T>(out var id);
 
-            _loadedCards.Add(ContentRegister);
-            return ContentRegister;
-        }
+            var Entity = GetEntityByID<BaseCardModel>(id);
+            
 
-        private BaseCardView InitViewModel(BaseCardModel cardModel)
-        {
-            if (cardModel.Components.FirstOrDefault(c => c.ID == typeof(ViewComponent)) is not ViewComponent viewInCard)
-                throw new NullReferenceException("The card doesn't have ViewComponent");
-
-            return GameData<Main>.Boot.InstantiateCMSEntity(viewInCard).GetComponent<BaseCardView>();
+            Entity.Get<ViewComponent>(out var viewComponent);
+            GameData<Main>.Boot.HandCards.Add(viewComponent.ViewModel as BaseCardView);
         }
     }
 }

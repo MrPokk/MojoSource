@@ -1,18 +1,16 @@
-using Game.CMS_Content.Card.Type;
+using Game.CMS_Content.Cards.Type;
 
-
-namespace Game.CMS_Content.Card
+namespace Game.CMS_Content.Cards
 {
     public class SystemInitCards : SystemInit
     {
         protected override void Init()
         {
-            var Controller = GameData<Main>.Boot.CardController;
+            var Controller = CMS.Get<BaseCardController>();
 
             Controller.GiveCardInHand<ArsonCard>();
             Controller.GiveCardInHand<ArsonCard>();
             Controller.GiveCardInHand<ArsonCard>();
-
         }
     }
 }

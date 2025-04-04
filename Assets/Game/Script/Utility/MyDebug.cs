@@ -1,14 +1,13 @@
 #if DEBUG || UNITY_EDITOR
-using Game.CMS_Content.Card;
-using Game.CMS_Content.Card.Type;
-using System;
+using Game.CMS_Content.Cards;
+using Game.CMS_Content.Cards.Type;
 using UnityEngine;
 public class MyDebug : MonoBehaviour
 {
     public void Update()
     {
         if (Input.GetKeyDown(KeyCode.K))
-            GameData<Main>.Boot.CardController.GiveCardInHand<ArsonCard>();
+            CMS.Get<BaseCardController>().GiveCardInHand<ArsonCard>();
 
         if (Input.GetKeyDown(KeyCode.P))
         {

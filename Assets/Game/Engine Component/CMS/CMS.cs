@@ -1,40 +1,28 @@
 using System;
 using System.Collections.Generic;
 using Engin.Utility;
-using Game.CMS_Content.Card;
 
 public class CMS : BaseInteraction, IInitInMain
 {
-
     public override Priority PriorityInteraction { get => Priority.FIRST_TASK; }
 
-    private static List<CMSEntity> CMSEntities;
+    private static HashSet<CMSEntity> CMSEntities;
 
     public void Init()
     {
-        CMSEntities = new List<CMSEntity>();
-        FindAll();
+        CMSEntities = new HashSet<CMSEntity>();
+
+        FindAllEntity();
     }
 
-
-    public static T TryAddValue<T>() where T : CMSEntity, new()
+    public static void Add(CMSEntity Entity)
     {
-        T NewModel = new T();
-        CMSEntities.Add(NewModel);
-        
-        return NewModel;
+        CMSEntities.Add(Entity);
     }
-    
-    public static void Add<T>() where T : CMSEntity, new()
+    private static void FindAllEntity()
     {
-        T NewModel = new T();
-        CMSEntities.Add(NewModel);
-    }
-
-    private static void FindAll()
-    {
-        var ListCMSEntity = ReflectionUtility.FindAllImplement<CMSEntity>();
-        foreach (var Element in ListCMSEntity)
+        var ListCMS = ReflectionUtility.FindAllImplement<CMSEntity>();
+        foreach (var Element in ListCMS)
         {
             CMSEntities.Add(Activator.CreateInstance(Element) as CMSEntity);
         }

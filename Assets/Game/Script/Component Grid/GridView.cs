@@ -2,7 +2,7 @@ using System;
 using UnityEditor;
 using UnityEngine;
 
-public class GridView : ModelView<GridView>
+public class GridView : ModelView
 {
     private Vector2Int Size => GameData<Main>.Boot.GridController.Grid.Size;
     private float CellSize => GameData<Main>.Boot.GridController.Grid.CellSize;

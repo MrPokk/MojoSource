@@ -1,9 +1,8 @@
 using Game.Script.GlobalComponent;
-using UnityEngine;
 
-namespace Game.CMS_Content.Card
+namespace Game.CMS_Content.Cards
 {
-    public class BaseCardView : DraggableObject<BaseCardView>
+    public class BaseCardView : DraggableObject
     {
         
         

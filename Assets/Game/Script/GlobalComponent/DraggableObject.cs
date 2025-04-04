@@ -4,12 +4,12 @@ using UnityEngine;
 namespace Game.Script.GlobalComponent
 {
     [RequireComponent(typeof(Collider2D))]
-    public abstract class DraggableObject<T> : ModelView<T>
+    public abstract class DraggableObject : ModelView
     {
-        private DraggableObject<T> _dragObject;
+        private DraggableObject _dragObject;
 
-        public static event Action<DraggableObject<T>> ReactionOnDrop;
-        public static event Action<DraggableObject<T>> ReactionOnDrag;
+        public static event Action<DraggableObject> ReactionOnDrop;
+        public static event Action<DraggableObject> ReactionOnDrag;
 
         private bool _isDrag = false;
 
@@ -53,7 +53,7 @@ namespace Game.Script.GlobalComponent
             var hitObject = Physics2D.Raycast(mousePosition, Vector2.zero).collider;
 
             if (hitObject)
-                _dragObject = hitObject.gameObject.GetComponent<DraggableObject<T>>();
+                _dragObject = hitObject.gameObject.GetComponent<DraggableObject>();
         }
     }
 }
