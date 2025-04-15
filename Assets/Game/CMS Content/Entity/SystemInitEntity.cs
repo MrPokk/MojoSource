@@ -1,4 +1,5 @@
 using Game.CMS_Content.Entity.Type;
+using Game.CMS_Content.Entity.Type.Enemys;
 using UnityEngine;
 
 namespace Game.CMS_Content.Entity
@@ -8,8 +9,10 @@ namespace Game.CMS_Content.Entity
         protected override void Init()
         {
             var Controller = CMS.Get<BaseEntityController>();
-            
+
             Controller.SpawnEntityInGrid<PlayerModel>(new Vector2Int(0, 0));
+            Controller.SpawnEntityInGrid<FrogModel>(new Vector2Int(5, 5));
+
         }
     }
 }

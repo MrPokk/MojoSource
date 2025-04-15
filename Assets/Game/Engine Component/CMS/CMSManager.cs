@@ -4,7 +4,7 @@
     using UnityEngine;
     public abstract class CMSManager : CMSEntity
     {
-        public Dictionary<GameObject, CMSEntity> _loadedEntity { get; private set; } = new Dictionary<GameObject, CMSEntity>();
+        public Dictionary<GameObject, CMSEntity> LoadedEntity { get; private set; } = new Dictionary<GameObject, CMSEntity>();
         protected abstract void SpawnEntity<T>() where T : CMSEntity, new();
         protected void Create<T>(out GameObject ID) where T : CMSEntity, new()
         {
@@ -16,12 +16,12 @@
             GameData<Main>.Boot.InstantiateCMSEntity(view);
 
             ID = view.ViewModel.gameObject;
-            _loadedEntity.Add(view.ViewModel.gameObject, NewEntity);
+            LoadedEntity.Add(view.ViewModel.gameObject, NewEntity);
         }
 
-        protected T GetEntityByID<T>(in GameObject ID) where T : CMSEntity
+        public T GetEntityByID<T>(in GameObject ID) where T : CMSEntity
         {
-            var Entity = _loadedEntity.GetValueOrDefault(ID);
+            var Entity = LoadedEntity.GetValueOrDefault(ID);
             if (Entity == null)
                 Debug.LogError("ERROR: Incorrect MODEL type or ID");
 

@@ -11,7 +11,7 @@ public abstract class GridUtility
 
     public static bool IsWithinGrid<T>(Vector2Int indexNode, T[,] grid)
     {
-        return indexNode.x >= 0 && indexNode.x < grid.GetLength(0) && indexNode.y >= 0 && indexNode.y < grid.GetLength(0);
+        return indexNode.x >= 0 && indexNode.x < grid.GetLength(0) && indexNode.y >= 0 && indexNode.y < grid.GetLength(1);
     }
 
     private static bool IsWithinGrid<T>(Vector2Int indexNode, GridModel<T> grid)

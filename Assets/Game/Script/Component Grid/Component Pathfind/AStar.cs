@@ -91,6 +91,7 @@ public class AStar
             var Neighbors = GetIndexNeighbors(_current.Index);
             foreach (var Neighbor in Neighbors)
             {
+               
                 GridNode NeighborNode = _grid[Neighbor.x, Neighbor.y];
 
                 int TentativeGCost = _current.GCost + CalculateHCost(_current.Index, Neighbor);

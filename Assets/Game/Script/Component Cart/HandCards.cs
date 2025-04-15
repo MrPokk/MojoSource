@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 public class HandCards : MonoBehaviour
 {
-
+    [SerializeField]
     private List<BaseCardView> _cards = new List<BaseCardView>();
 
     private float _spacing;
@@ -41,15 +41,11 @@ public class HandCards : MonoBehaviour
         
         for (int i = 0; i < _cards.Count; i++)
         {
-            var Offset = new Vector3(0, _spacing * (i - _cards.Count / 2f), 0);
-            
+            var Offset = new Vector3(0, (i - _cards.Count / 2.2f) * _spacing, 0);
             if (_axisSwap)
                 Offset = new Vector3(Offset.y, Offset.x, Offset.z);
-
-            var Position = transform.position + Offset;
-            Position += Vector3.forward * (0.01f * i);
-
-            _cards[i].gameObject.transform.position = Position;
+            
+            _cards[i].gameObject.transform.position = transform.position + Offset;
         }
     }
 }

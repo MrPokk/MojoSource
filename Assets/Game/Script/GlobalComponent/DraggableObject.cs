@@ -1,10 +1,11 @@
+using Game.Script.GlobalComponent.Interface;
 using System;
 using UnityEngine;
 
 namespace Game.Script.GlobalComponent
 {
     [RequireComponent(typeof(Collider2D))]
-    public abstract class DraggableObject : ModelView
+    public abstract class DraggableObject : ModelView, IRaycasting
     {
         private DraggableObject _dragObject;
 
@@ -15,13 +16,13 @@ namespace Game.Script.GlobalComponent
 
         private void OnEnable()
         {
-            MouseController.OnClickDown += GetRaycastObject;
+            MouseController.OnClickDown += FirstClick;
             MouseController.OnClickPressing += Drag;
             MouseController.OnClickUp += Drop;
         }
         private void OnDestroy()
         {
-            MouseController.OnClickDown -= GetRaycastObject;
+            MouseController.OnClickDown -= FirstClick;
             MouseController.OnClickPressing -= Drag;
             MouseController.OnClickUp -= Drop;
         }
@@ -47,13 +48,12 @@ namespace Game.Script.GlobalComponent
             _dragObject.transform.position = mousePosition;
         }
 
-        private void GetRaycastObject(Vector3 mousePosition)
+        private void FirstClick(Vector3 mousePosition)
         {
-
-            var hitObject = Physics2D.Raycast(mousePosition, Vector2.zero).collider;
-
-            if (hitObject)
-                _dragObject = hitObject.gameObject.GetComponent<DraggableObject>();
+            var mRaycastObject = IRaycasting.TryGetRaycastObject<DraggableObject>(mousePosition, out var draggable);
+            if (mRaycastObject)
+                _dragObject = draggable;
         }
+
     }
 }

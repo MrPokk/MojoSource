@@ -14,6 +14,11 @@ interface IEnterInStart
     public void Start();
 }
 
+interface IStopInGame
+{
+    public void Stop();
+}
+
 interface IInitInMain
 {
     public void Init();
@@ -22,4 +27,9 @@ interface IInitInMain
 interface IEnterInUpdate
 {
     void Update(float TimeDelta);
+}
+
+interface IEnterInPhysicUpdate
+{
+    void PhysicUpdate(float TimeDelta);
 }

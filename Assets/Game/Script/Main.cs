@@ -5,17 +5,15 @@ using Game.CMS_Content.Entity;
 using Game.Script.Utility;
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 public class Main : MonoBehaviour, IMain
 {
-    public static CoroutineUtility _coroutine { get; private set; }
     private Interaction _interact;
-
-    [SerializeField] private GridView gridView;
-
-    public GridController GridController { get; private set; }
-
+    
+    public GridView GridView;
     public HandCards HandCards;
-
+    public UIRoot UIRoot;
+    public GridController GridController { get; private set; }
     public Camera MainCamera { get; private set; }
 
     public void StartGame()
@@ -25,12 +23,12 @@ public class Main : MonoBehaviour, IMain
 
         GameData<Main>.Boot = this;
 
-        GridController = new GridController(new(10, 10), 1, gridView);
+        GridController = new GridController(new(12, 7), 0.8f, GridView);
 
         MainCamera = Camera.main;
 
-        _coroutine = new GameObject("[Coroutine]").AddComponent<CoroutineUtility>();
-        DontDestroyOnLoad(_coroutine.gameObject);
+        GameData<Main>.Corotine  = new GameObject("[Coroutine]").AddComponent<CoroutineUtility>();
+        DontDestroyOnLoad(GameData<Main>.Corotine.gameObject);
 
         var Init = _interact.FindAll<IInitInMain>();
         foreach (var Element in Init)
@@ -43,25 +41,15 @@ public class Main : MonoBehaviour, IMain
         {
             Element.Start();
         }
-
-        GameData<Main>.IsStartGame = true;
-
+        
+        _interact.FindAll<IEnterInUpdate>();
+        _interact.FindAll<IStopInGame>();
+        _interact.FindAll<IEnterInPhysicUpdate>();
+        _interact.FindAll<IStopInGame>();
+        
     }
 
-
-
-    public void UpdateGame(float TimeDelta)
-    {
-        var Update = _interact.FindAll<IEnterInUpdate>();
-        foreach (var Element in Update)
-        {
-            Element.Update(TimeDelta);
-        }
-    }
-
-    public void PhysicUpdateGame(float TimeDelta)
-    { }
-
+    
     public void InstantiateCMSEntity(ViewComponent SetView, Vector3 Position = default, Quaternion Rotation = default)
     {
         if (!SetView.ViewModel)
@@ -70,6 +58,36 @@ public class Main : MonoBehaviour, IMain
         SetView.ViewModel = Instantiate(SetView.ViewModel, Position, Rotation);
     }
 
+
+
+    public void UpdateGame(float TimeDelta)
+    {
+        foreach (var Element in InteractionCache<IEnterInUpdate>.AllInteraction)
+        {
+            Element.Update(TimeDelta);
+        }
+    }
+
+    public void PhysicUpdateGame(float TimeDelta)
+    {
+        foreach (var Element in InteractionCache<IEnterInPhysicUpdate>.AllInteraction)
+        {
+            Element.PhysicUpdate(TimeDelta);
+        }
+    }
+
+    public void StoppedGame()
+    {
+        foreach (var Element in InteractionCache<IStopInGame>.AllInteraction)
+        {
+            Element.Stop();
+        }
+    } 
+    
+    private void Awake()
+    {
+        StartGame();
+    }
     private void Update()
     {
         UpdateGame(Time.deltaTime);
@@ -78,9 +96,10 @@ public class Main : MonoBehaviour, IMain
     {
         PhysicUpdateGame(Time.deltaTime);
     }
-    private void Awake()
+
+    private void OnDestroy()
     {
-        StartGame();
+        StoppedGame();
     }
 
 }

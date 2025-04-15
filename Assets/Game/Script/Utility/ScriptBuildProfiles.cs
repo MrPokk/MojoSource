@@ -17,7 +17,7 @@ public class ScriptBuildProfiles : EditorWindow
     [MenuItem("File/Build All Platforms ^#&P", priority = 212)]
     private static void BuildPlatforms()
     {
-        t:
+        
         if (!Directory.Exists(_directoryBuild))
             Directory.CreateDirectory(_directoryBuild);
 
