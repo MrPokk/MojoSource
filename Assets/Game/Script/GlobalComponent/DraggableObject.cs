@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Game.Script.GlobalComponent
 {
     [RequireComponent(typeof(Collider2D))]
-    public abstract class DraggableObject : ModelView, IRaycasting
+    public abstract class DraggableObject : ModelView
     {
         private DraggableObject _dragObject;
 
@@ -13,7 +13,7 @@ namespace Game.Script.GlobalComponent
         public static event Action<DraggableObject> ReactionOnDrag;
 
         private bool _isDrag = false;
-
+        
         private void OnEnable()
         {
             MouseController.OnClickDown += FirstClick;
@@ -50,7 +50,7 @@ namespace Game.Script.GlobalComponent
 
         private void FirstClick(Vector3 mousePosition)
         {
-            var mRaycastObject = IRaycasting.TryGetRaycastObject<DraggableObject>(mousePosition, out var draggable);
+            var mRaycastObject = Raycasting.TryGetRaycastObject<DraggableObject>(mousePosition, out var draggable);
             if (mRaycastObject)
                 _dragObject = draggable;
         }

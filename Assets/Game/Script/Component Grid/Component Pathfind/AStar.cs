@@ -34,6 +34,31 @@ public class AStar
         new Vector2Int(1, 1),
     };
 
+    
+    public static List<Vector2Int> TryGetPathFind(Vector2Int start, Vector2Int end)
+    {
+        if (GridUtility.GridModel.Array == null)
+        {
+            Debug.LogError($"ERROR: {nameof(GridUtility.GridModel)}");
+            return null;
+        }
+
+        if (!GridUtility.IsWithinGrid(start, GridUtility.GridModel.Array) || !GridUtility.IsWithinGrid(end, GridUtility.GridModel.Array))
+        {
+            Debug.LogWarning("WARNING: start or end are not within the grid");
+            return null;
+        }
+        
+        if (start == end)
+        {
+            Debug.LogWarning("WARNING: start or end are not within the grid");
+            return null;
+        }
+
+        return new AStar().Find(start, end, GridUtility.GridModel.Array);
+    }
+    
+
     public static List<Vector2Int> TryGetPathFind(Vector2Int start, Vector2Int end, GridNode[,] grid)
     {
         if (grid == null)

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Game.Script.GlobalComponent.Interface
 {
-    public interface IRaycasting
+    public sealed class Raycasting
     {
         public static bool TryGetRaycastObject<T>(Vector3 mousePosition, out T monoBehaviour) where T : MonoBehaviour
         {
@@ -17,11 +17,11 @@ namespace Game.Script.GlobalComponent.Interface
                 if (!raycastComponentTry)
                 {
                     Debug.Log("ERROR: NOT COMPONENT RAYCAST");
-                    
+
                     monoBehaviour = null;
                     return false;
                 }
-                
+
                 if (insideComponent)
                 {
                     monoBehaviour = component;
@@ -33,7 +33,26 @@ namespace Game.Script.GlobalComponent.Interface
             monoBehaviour = null;
             return false;
         }
+
+
+        public static bool TryGetRaycastObject(Vector3 mousePosition, out GameObject monoBehaviour)
+        {
+            var hitObject = Physics2D.Raycast(mousePosition, Vector2.zero).collider;
+
+            if (hitObject)
+            {
+                var raycastComponentTry = hitObject.gameObject.TryGetComponent<RaycastObject>(out var raycastComponent);
+
+                if (raycastComponentTry)
+                    monoBehaviour = raycastComponent.gameObject;
+
+            }
+            Debug.Log("ERROR: NOT COMPONENT RAYCAST");
+
+            monoBehaviour = null;
+            return false;
+        }
     }
-    
+
 
 }

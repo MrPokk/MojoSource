@@ -43,9 +43,9 @@ public class Main : MonoBehaviour, IMain
         }
         
         _interact.FindAll<IEnterInUpdate>();
-        _interact.FindAll<IStopInGame>();
+        _interact.FindAll<IExitInGame>();
         _interact.FindAll<IEnterInPhysicUpdate>();
-        _interact.FindAll<IStopInGame>();
+        _interact.FindAll<IExitInGame>();
         
     }
 
@@ -78,7 +78,7 @@ public class Main : MonoBehaviour, IMain
 
     public void StoppedGame()
     {
-        foreach (var Element in InteractionCache<IStopInGame>.AllInteraction)
+        foreach (var Element in InteractionCache<IExitInGame>.AllInteraction)
         {
             Element.Stop();
         }

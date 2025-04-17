@@ -10,7 +10,7 @@ namespace Game.CMS_Content.Entity.Components
 {
     public class MoveComponent : IComponent
     {
-        public Action<Vector2>  MoveMethod {
+        public Action<Vector2Int>  MoveMethod {
             get {
                 return _move;
             }
@@ -24,7 +24,7 @@ namespace Game.CMS_Content.Entity.Components
 
 
         private bool _isWalking;
-        private Action<Vector2> _move;
+        private Action<Vector2Int> _move;
 
         public IEnumerator MakeByStep(List<Vector2Int> path, GameObject modelViewFromMove)
         {
@@ -43,11 +43,5 @@ namespace Game.CMS_Content.Entity.Components
             
             _isWalking = false;
         }
-    }
-
-    public class PositionComponent : IComponent
-    {
-        public Vector2Int? GridPosition;
-        public Vector3 WorldPosition;
     }
 }

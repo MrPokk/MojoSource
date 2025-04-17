@@ -16,7 +16,7 @@ namespace Game.CMS_Content.Entity.System
             {
                 EntityModel.Value.Get<MoveComponent>(out var moveComponent);
                 
-                moveComponent.MoveMethod?.Invoke(MouseController.MousePose);
+               // moveComponent.MoveMethod?.Invoke(MouseController.MousePose);
             }
         }
     }

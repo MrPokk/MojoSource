@@ -14,7 +14,7 @@ interface IEnterInStart
     public void Start();
 }
 
-interface IStopInGame
+interface IExitInGame
 {
     public void Stop();
 }

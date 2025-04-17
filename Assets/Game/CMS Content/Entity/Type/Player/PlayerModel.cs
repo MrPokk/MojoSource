@@ -5,23 +5,21 @@ namespace Game.CMS_Content.Entity.Type
 {
     public class PlayerModel : BaseEntityModel
     {
-        
-        
         public PlayerModel()
         {
             BaseComponent.ViewComponent.LoadView<PlayerView>(PathResources.ENTITY);
 
-            BaseComponent.MoveComponent.MoveMethod = MoveToMouse;
+            BaseComponent.MoveComponent.MoveMethod = MoveTo;
         }
-        private void MoveToMouse(Vector2 mousePosition)
+        private void MoveTo(Vector2Int positionTo)
         {
-            var MousePoseInGrid = GridUtility.TryGetPositionInGrid(MouseController.MousePose, GameData<Main>.Boot.GridController.Grid);
-            var GridPosition = GridUtility.TryGetPositionInGrid(View.transform.position, GameData<Main>.Boot.GridController.Grid);
+            var IsStartPosition = GridUtility.TryGetPositionInGrid(View.transform.position, out var StartPosition);
+            var EndPosition = GridUtility.IsWithinGrid(positionTo);
 
-            if (MousePoseInGrid == null || GridPosition == null)
+            if (!IsStartPosition || !EndPosition)
                 return;
 
-            var Path = AStar.TryGetPathFind((Vector2Int)GridPosition, (Vector2Int)MousePoseInGrid, GameData<Main>.Boot.GridController.Grid.Array);
+            var Path = AStar.TryGetPathFind(StartPosition, positionTo, GameData<Main>.Boot.GridController.Grid.Array);
 
             GameData<Main>.Corotine.StartCoroutine(BaseComponent.MoveComponent.MakeByStep(Path, View));
         }

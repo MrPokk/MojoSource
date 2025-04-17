@@ -18,11 +18,14 @@ namespace Game.CMS_Content.Entity
         {
             Create<T>(out var Entity);
 
-            var PositionInGrid = GridUtility.TryGetPositionInGrid(_positionCurrent, GameData<Main>.Boot.GridController.Grid);
-            PositionInGrid += (Entity.transform.localScale / 2);
+            var PositionInGrid = GridUtility.TryGetPositionInGrid(_positionCurrent, out Vector3 positionInGrid);
+            if (PositionInGrid)
+            {
+                positionInGrid += (Entity.transform.localScale / 2);
 
-            if (PositionInGrid != null)
-                Entity.transform.position = (Vector3)PositionInGrid;
+                if (PositionInGrid != null)
+                    Entity.transform.position = positionInGrid;
+            }
         }
     }
 }

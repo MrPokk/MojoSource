@@ -13,12 +13,12 @@ namespace Game.CMS_Content.Entity.Type.Enemys
         {
             // BaseComponent.ViewComponent.LoadView<PlayerView>(PathResources.ENTITY);
             
-            BaseComponent.MoveComponent.MoveMethod = Move;
+            BaseComponent.MoveComponent.MoveMethod = MoveTo;
         }
       
 
 
-        private void Move(Vector2 mousePosition)
+        private void MoveTo(Vector2Int positionTo)
         {
             var Entitys = CMS.Get<BaseEntityController>().LoadedEntity;
 
@@ -27,16 +27,14 @@ namespace Game.CMS_Content.Entity.Type.Enemys
                 if (AllEntity is not PlayerModel Player)
                     continue;
                 
-                var PlayerPoseInGrid =  GridUtility.TryGetPositionInGrid(Player.View.transform.position, GameData<Main>.Boot.GridController.Grid);;
-                var EnemyPoseInGrid =  GridUtility.TryGetPositionInGrid(View.transform.position, GameData<Main>.Boot.GridController.Grid);;
+                var IsPlayerPoseInGrid =  GridUtility.TryGetPositionInGrid(Player.View.transform.position, out var player);
+                var IsEnemyPoseInGrid =  GridUtility.TryGetPositionInGrid(View.transform.position, out var enemy);
                     
-                if (PlayerPoseInGrid == null || EnemyPoseInGrid == null)
+                if (!IsPlayerPoseInGrid || !IsEnemyPoseInGrid)
                     return;
                 
-                if(PlayerPoseInGrid == EnemyPoseInGrid)
-                    return;
                    
-                var PathToPlayer = AStar.TryGetPathFind((Vector2Int)EnemyPoseInGrid, (Vector2Int)PlayerPoseInGrid, GameData<Main>.Boot.GridController.Grid.Array);
+                var PathToPlayer = AStar.TryGetPathFind(player, enemy);
 
                 GameData<Main>.Corotine.StartCoroutine(BaseComponent.MoveComponent.MakeByStep(PathToPlayer, View));
             }
