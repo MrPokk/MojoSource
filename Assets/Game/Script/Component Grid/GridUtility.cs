@@ -3,7 +3,7 @@ public static class GridUtility
 {
     public static Vector2Int GridMousePosition {
         get {
-            var IsGrid = TryGetPositionInGrid(MouseController.MousePose, out var mousePosition);
+            var IsGrid = TryGetPositionInGrid(MouseInteraction.MousePose, out var mousePosition);
             if (IsGrid)
                 return mousePosition;
             

@@ -30,6 +30,7 @@ public class HandCards : MonoBehaviour
     {
         _cards.Remove(Card);
     }
+    
     private void SetPoseTile()
     {
         float Size = _maxSpacing * _cards.Count;
@@ -49,3 +50,4 @@ public class HandCards : MonoBehaviour
         }
     }
 }
+

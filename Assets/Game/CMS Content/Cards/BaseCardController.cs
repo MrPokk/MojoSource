@@ -17,7 +17,7 @@ namespace Game.CMS_Content.Cards
             var Entity = GetEntityByID<BaseCardModel>(id);
             
 
-            Entity.Get<ViewComponent>(out var viewComponent);
+            Entity.GetComponent<ViewComponent>(out var viewComponent);
             GameData<Main>.Boot.HandCards.Add(viewComponent.ViewModel as BaseCardView);
         }
     }

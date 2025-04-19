@@ -10,6 +10,8 @@ namespace Game.CMS_Content.Cards
         {
             Define<ActionComponent>(out var actionCardComponent);
             Define<PriorityCardComponent>(out var priorityCardComponent);
+            Define<DraggableComponent>(out var draggableComponent);
+
             CardComponentBase = new BaseCardComponent(actionCardComponent, priorityCardComponent);
         }
 

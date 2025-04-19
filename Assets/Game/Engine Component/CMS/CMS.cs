@@ -31,7 +31,7 @@ public class CMS : BaseInteraction, IInitInMain
     public static void TryGetComponent<CMSEntityType, ComponentType>(out ComponentType refComponent) where ComponentType : class, IComponent where CMSEntityType : CMSEntity
     {
         var Entity = Get<CMSEntityType>();
-        Entity.Get<ComponentType>(out var componentType);
+        Entity.GetComponent<ComponentType>(out var componentType);
         refComponent = componentType;
     }
 
