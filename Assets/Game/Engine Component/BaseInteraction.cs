@@ -1,4 +1,5 @@
 using Engin.Utility;
+using Game.CMS_Content.Cards;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -33,3 +34,10 @@ interface IEnterInPhysicUpdate
 {
     void PhysicUpdate(float TimeDelta);
 }
+
+
+interface IEnterInNextTurn
+{
+    void UpdateTurn();
+}
+

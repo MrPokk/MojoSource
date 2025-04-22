@@ -1,6 +1,7 @@
+using Game.CMS_Content.Entity;
 using UnityEngine;
 
-namespace Game.CMS_Content.Entity
+namespace Game.CMS_Content.Entitys
 {
     public class BaseEntityController : CMSManager
     {

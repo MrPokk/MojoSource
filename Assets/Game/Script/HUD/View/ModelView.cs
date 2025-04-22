@@ -1,3 +1,4 @@
+using Game.CMS_Content.Cards;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,6 +14,17 @@ public abstract class ModelView : MonoBehaviour
             var Entity = CMSManagers.GetEntityByID(gameObject);
             if (Entity != null)
                 return Entity;
+        }
+        return null;
+    }
+    
+    public T GetModel<T>() where T : CMSEntity
+    {
+        foreach (var CMSManagers in CMS.GetAll<CMSManager>())
+        {
+            var Entity = CMSManagers.GetEntityByID(gameObject);
+            if (Entity != null)
+                return Entity as T;
         }
         return null;
     }

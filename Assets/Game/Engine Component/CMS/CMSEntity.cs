@@ -8,13 +8,19 @@ using UnityEngine;
 
 public abstract class CMSEntity
 {
-    private readonly HashSet<IComponent> _components = new HashSet<IComponent>();
+    private HashSet<IComponent> _components = new HashSet<IComponent>();
 
     public Type ID { get => GetType(); }
 
     public void GetComponent<T>(out T refComponent) where T : class, IComponent
     {
         refComponent = _components.FirstOrDefault((c) => c is T) as T;
+    }
+
+    protected void RemoveComponent<T>() where T : class, IComponent
+    {
+        GetComponent<T>(out T refComponent);
+        _components.Remove(refComponent);
     }
 
     public ModelView GetView()
@@ -31,10 +37,6 @@ public abstract class CMSEntity
     {
         return new(GetView().transform.position.x, GetView().transform.position.y);
     }
-
-
-
-
     protected void Define<T>(out T component) where T : IComponent, new()
     {
         component = new T();

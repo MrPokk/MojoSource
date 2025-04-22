@@ -17,7 +17,7 @@ namespace Game.Script.Utility
             foreach (var CMSManager in CMS.GetAll<CMSManager>())
             {
 
-                foreach (var Entity in CMSManager.LoadedEntity)
+                foreach (var Entity in CMSManager.GetEntities())
                 {
                     var EntityPosition = Entity.Key.transform.position;
                     var DistanceToModel = Vector2.Distance(FromModelPosition, EntityPosition);
@@ -43,7 +43,7 @@ namespace Game.Script.Utility
             foreach (var CMSManager in CMS.GetAll<CMSManager>())
             {
 
-                foreach (var Entity in CMSManager.LoadedEntity)
+                foreach (var Entity in CMSManager.GetEntities())
                 {
                     var EntityPosition = Entity.Key.transform.position;
                     var DistanceToModel = Vector2.Distance(FromModelPosition, EntityPosition);

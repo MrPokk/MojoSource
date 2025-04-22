@@ -6,6 +6,8 @@ namespace Game.Script.Global_Interactions
 {
     public class DraggableInteraction : BaseInteraction, IEnterInStart, IExitInGame
     {
+        public static event Action<ModelView> DropObject;
+        public static event Action<ModelView> DraggingObject;
 
         private (ModelView, DraggableComponent) _dragObject = (null, null);
 
@@ -33,12 +35,24 @@ namespace Game.Script.Global_Interactions
         }
         private void UpdateDrag(Vector2 mousePosition)
         {
-            _dragObject.Item2.Drag(_dragObject.Item1);
+            if (!_dragObject.Item1 || _dragObject.Item2 == null)
+                return;
+
+            _dragObject.Item2.Drag?.Invoke(_dragObject.Item1);
+            DraggingObject?.Invoke(_dragObject.Item1);
         }
 
         private void StopDrag(Vector2 mousePosition)
         {
             MouseInteraction.OnClickPressing -= UpdateDrag;
+            
+            if (!_dragObject.Item1 || _dragObject.Item2 == null)
+                return;
+            
+            _dragObject.Item2.Drop?.Invoke(_dragObject.Item1);
+            DropObject?.Invoke(_dragObject.Item1);
+
+            _dragObject = (null, null);
         }
 
     }

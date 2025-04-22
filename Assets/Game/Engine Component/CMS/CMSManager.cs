@@ -3,8 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 public abstract class CMSManager : CMSEntity
 {
-    public Dictionary<GameObject, CMSEntity> LoadedEntity { get; private set; } = new Dictionary<GameObject, CMSEntity>();
+    private Dictionary<GameObject, CMSEntity> LoadedEntity { get; set; } = new Dictionary<GameObject, CMSEntity>();
     protected abstract void SpawnEntity<T>() where T : CMSEntity, new();
+    public virtual void DestroyEntity(in GameObject ID)
+    {
+        LoadedEntity.Remove(ID);
+        Object.Destroy(ID);
+    }
+    
+    public IReadOnlyDictionary<GameObject, CMSEntity> GetEntities()
+    {
+        return LoadedEntity;
+    }
+
     protected void Create<T>(out GameObject ID) where T : CMSEntity, new()
     {
         T NewEntity = new T();

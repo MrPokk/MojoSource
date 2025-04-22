@@ -12,13 +12,27 @@ namespace Game.CMS_Content.Cards
             Define<PriorityCardComponent>(out var priorityCardComponent);
             Define<DraggableComponent>(out var draggableComponent);
 
+            draggableComponent.Drag = dragObject => {
+                dragObject.transform.position = MouseInteraction.MousePose;
+
+                if (dragObject is BaseCardView baseCardView)
+                    GameData<Main>.Boot.HandCards.Remove(baseCardView);
+            };
+
+            draggableComponent.Drop = dragObject => {
+                if (dragObject is BaseCardView baseCardView)
+                    GameData<Main>.Boot.HandCards.Add(baseCardView);
+            };
+
             CardComponentBase = new BaseCardComponent(actionCardComponent, priorityCardComponent);
         }
 
+
+
         protected class BaseCardComponent : IComponent
         {
-            public ActionComponent ActionCardComponent;
-            public PriorityCardComponent PriorityCardComponent;
+            public readonly ActionComponent ActionCardComponent;
+            public readonly PriorityCardComponent PriorityCardComponent;
             public BaseCardComponent(ActionComponent actionCard, PriorityCardComponent priorityCard)
             {
                 ActionCardComponent = actionCard;

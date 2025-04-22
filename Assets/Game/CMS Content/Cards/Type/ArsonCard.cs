@@ -8,7 +8,7 @@ namespace Game.CMS_Content.Cards.Type
         public ArsonCard()
         {
             Define(out ViewComponent viewComponent);
-            viewComponent.LoadView<BaseCardView>(PathResources.PREFABS);
+            viewComponent.LoadView<BaseCardView>(PathResources.CARD);
 
             CardComponentBase.PriorityCardComponent.Priority = Priority.High;
             CardComponentBase.ActionCardComponent.AbilityCard = () => { Debug.Log("dssa"); };

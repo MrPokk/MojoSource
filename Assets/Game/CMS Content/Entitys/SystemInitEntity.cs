@@ -1,5 +1,6 @@
 using Game.CMS_Content.Entity.Type;
 using Game.CMS_Content.Entity.Type.Enemys;
+using Game.CMS_Content.Entitys;
 using UnityEngine;
 
 namespace Game.CMS_Content.Entity

@@ -10,13 +10,18 @@ namespace Game.CMS_Content.Cards
             SpawnEntity<T>();
         }
 
+        public override void DestroyEntity(in GameObject ID)
+        {
+            GameData<Main>.Boot.HandCards.Remove(ID.GetComponent<BaseCardView>());
+            base.DestroyEntity(in ID);
+        }
+
         protected override void SpawnEntity<T>()
         {
             Create<T>(out var id);
 
             var Entity = GetEntityByID<BaseCardModel>(id);
             
-
             Entity.GetComponent<ViewComponent>(out var viewComponent);
             GameData<Main>.Boot.HandCards.Add(viewComponent.ViewModel as BaseCardView);
         }

@@ -8,11 +8,14 @@ namespace Game.CMS_Content.Entitys.Components
     {
 
         private List<BaseCardModel> InsideCard = new List<BaseCardModel>();
-
-
-        public List<BaseCardModel> GetAllCard<T>() where T : BaseCardModel
+        
+        public IReadOnlyList<BaseCardModel> GetAllCard<T>() where T : BaseCardModel
         {
             return InsideCard.FindAll(card => card is T);
+        }
+        public IReadOnlyList<BaseCardModel> GetAllCard()
+        {
+            return InsideCard;
         }
         public void AddCard(ModelView draggableObject)
         {

@@ -1,7 +1,5 @@
-using Engin.Utility;
-using System;
-using System.Collections;
-using System.Collections.Generic;
+using Game.CMS_Content.Entitys;
+using Game.CMS_Content.Entitys.Components;
 using UnityEngine;
 
 namespace Game.CMS_Content.Entity.Type.Enemys
@@ -10,17 +8,14 @@ namespace Game.CMS_Content.Entity.Type.Enemys
     {
         public FrogModel()
         {
-            Define<DraggableComponent>(out var component);
             BaseComponent.ViewComponent.LoadView<FrogView>(PathResources.ENTITY);
-
             BaseComponent.MoveComponent.MoveMethod = MoveTo;
+            BaseComponent.MoveComponent.MaxCountTurn = 2;
         }
-
-
-
+        
         private void MoveTo(Vector2Int positionTo)
         {
-            var Entitys = CMS.Get<BaseEntityController>().LoadedEntity;
+            var Entitys = CMS.Get<BaseEntityController>().GetEntities();
 
             foreach (var AllEntity in Entitys.Values)
             {
@@ -32,7 +27,6 @@ namespace Game.CMS_Content.Entity.Type.Enemys
 
                 if (!IsPlayerPoseInGrid || !IsEnemyPoseInGrid)
                     return;
-
 
                 var PathToPlayer = AStar.TryGetPathFind(player, enemy);
 

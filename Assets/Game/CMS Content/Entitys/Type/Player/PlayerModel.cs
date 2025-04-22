@@ -1,3 +1,4 @@
+using Game.CMS_Content.Entitys.Components;
 using UnityEngine;
 using NotImplementedException = System.NotImplementedException;
 
@@ -7,9 +8,9 @@ namespace Game.CMS_Content.Entity.Type
     {
         public PlayerModel()
         {
-            
             BaseComponent.ViewComponent.LoadView<PlayerView>(PathResources.ENTITY);
             BaseComponent.MoveComponent.MoveMethod = MoveTo;
+            BaseComponent.MoveComponent = new MoveComponent();
         }
      
         

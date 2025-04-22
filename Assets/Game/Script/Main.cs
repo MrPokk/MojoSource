@@ -1,11 +1,8 @@
 using Engin.Utility;
 using Game.CMS_Content;
-using Game.CMS_Content.Cards;
-using Game.CMS_Content.Entity;
 using Game.Script.Utility;
 using System;
 using UnityEngine;
-using UnityEngine.Serialization;
 public class Main : MonoBehaviour, IMain
 {
     private Interaction _interact;

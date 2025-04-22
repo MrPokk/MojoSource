@@ -1,7 +1,6 @@
 using Game.CMS_Content.Entity.Type;
 using Game.CMS_Content.Entitys.Components;
 using Game.Script.Global_Interactions;
-using System.Collections;
 using UnityEngine;
 
 namespace Game.CMS_Content.Entitys.Type.Player.Interactions

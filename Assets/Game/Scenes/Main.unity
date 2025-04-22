@@ -148,7 +148,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7b4ead1e1b9419eb15fcabed83e6a2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cards: []
   _axisSwap: 1
   _maxSpacing: 0.6
   _maxSize: 1.5
@@ -177,7 +176,6 @@ GameObject:
   m_Component:
   - component: {fileID: 420943854}
   - component: {fileID: 420943855}
-  - component: {fileID: 420943856}
   m_Layer: 0
   m_Name: Main
   m_TagString: Untagged
@@ -215,18 +213,6 @@ MonoBehaviour:
   GridView: {fileID: 2026179662}
   HandCards: {fileID: 330609669}
   UIRoot: {fileID: 786509751}
---- !u!114 &420943856
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 420943852}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1fe8ff2dbb654cada62cf2b0665c9f97, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
