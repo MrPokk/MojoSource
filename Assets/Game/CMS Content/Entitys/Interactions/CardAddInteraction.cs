@@ -23,7 +23,7 @@ namespace Game.CMS_Content.Entitys.Interactions
             if (!cardView || cardView.GetModel() is not BaseCardModel cardModel)
                 return;
             
-            var NearestEntity = TransformUtility.FindToNearest<CardInsideComponent>(cardView);
+            var NearestEntity = TransformUtility.FindToNearest<CMSEntity,CardInsideComponent>(cardView);
             var NearestDistance = Vector2.Distance(cardView.transform.position, NearestEntity.GetViewPosition2D());
               
             if (NearestDistance <= 1f)

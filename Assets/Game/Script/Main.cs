@@ -44,6 +44,8 @@ public class Main : MonoBehaviour, IMain
         _interact.FindAll<IEnterInPhysicUpdate>();
         _interact.FindAll<IExitInGame>();
         
+        _interact.FindAll<IEnterInNextTurn>();
+        
     }
 
     

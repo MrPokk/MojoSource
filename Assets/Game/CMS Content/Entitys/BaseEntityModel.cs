@@ -2,12 +2,12 @@ using Engin.Utility;
 using Game.CMS_Content.Entitys.Components;
 using UnityEngine;
 
-namespace Game.CMS_Content.Entity
+namespace Game.CMS_Content.Entitys
 {
     public abstract class BaseEntityModel : CMSEntity
     {
-        protected readonly BaseEntityComponent BaseComponent;
-        public GameObject View => BaseComponent.ViewComponent.ViewModel.gameObject;
+        protected readonly BaseEntityComponent Components;
+        protected internal GameObject View => Components.View.ViewModel.gameObject;
         protected BaseEntityModel()
         {
             Define<ViewComponent>(out var viewComponent);
@@ -15,20 +15,20 @@ namespace Game.CMS_Content.Entity
             Define<CardInsideComponent>(out var cardComponent);
             Define<RaycastingComponent>(out var raycastCommand);
 
-            BaseComponent = new BaseEntityComponent(moveComponent, viewComponent, cardComponent);
+            Components = new BaseEntityComponent(moveComponent, viewComponent, cardComponent);
         }
 
         protected class BaseEntityComponent : IComponent
         {
-            public MoveComponent MoveComponent;
-            public readonly ViewComponent ViewComponent;
-            public readonly CardInsideComponent CardComponent;
+            public readonly MoveComponent Move;
+            public readonly ViewComponent View;
+            public readonly CardInsideComponent Card;
 
             public BaseEntityComponent(MoveComponent moveComponent, ViewComponent viewComponent, CardInsideComponent cardComponent)
             {
-                ViewComponent = viewComponent;
-                MoveComponent = moveComponent;
-                CardComponent = cardComponent;
+                View = viewComponent;
+                Move = moveComponent;
+                Card = cardComponent;
             }
         }
     }

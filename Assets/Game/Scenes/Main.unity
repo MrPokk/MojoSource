@@ -148,6 +148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7b4ead1e1b9419eb15fcabed83e6a2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _cards: []
   _axisSwap: 1
   _maxSpacing: 0.6
   _maxSize: 1.5
@@ -680,6 +681,22 @@ PrefabInstance:
     - target: {fileID: 1634078076645214301, guid: 2c02ecf55594b7548824a8faf1b50950, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8309297837837197774, guid: 2c02ecf55594b7548824a8faf1b50950, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 786509751}
+    - target: {fileID: 8309297837837197774, guid: 2c02ecf55594b7548824a8faf1b50950, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: NextTurn
+      objectReference: {fileID: 0}
+    - target: {fileID: 8309297837837197774, guid: 2c02ecf55594b7548824a8faf1b50950, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: UIRoot, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8309297837837197774, guid: 2c02ecf55594b7548824a8faf1b50950, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

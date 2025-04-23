@@ -17,7 +17,7 @@ namespace Game.CMS_Content
             set {
                 if (_drag != null)
                     throw new Exception("DraggableComponent._drag is set");
-                
+
                 _drag = value;
             }
         }
@@ -28,7 +28,7 @@ namespace Game.CMS_Content
             set {
                 if (_drop != null)
                     throw new Exception("DraggableComponent._drag is set");
-                
+
                 _drop = value;
             }
         }

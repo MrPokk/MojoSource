@@ -10,42 +10,28 @@ namespace Game.CMS_Content.Entitys.Components
     public class MoveComponent : IComponent
     {
         private bool _isWalking;
-        private static int? _maxCountTurn;
-        private int _countTurn;
-        private Action<Vector2Int> _move;
-        
-        public MoveComponent()
+        public int MaxCountTurn { get; private set; }
+        public int CountTurn { get; private set; }
+        public Action<Vector2Int> MoveMethod { get; private set; }
+
+        public void Init(int maxCountTurn, Action<Vector2Int> moveMethod)
         {
+            if (maxCountTurn > 0)
+                MaxCountTurn = maxCountTurn;
+            else
+                throw new ArgumentException("ERROR: THE VALUES MUST BE GREATER THAN 0");
+            MoveMethod = moveMethod;
             CountTurnUpdate();
         }
-        public int MaxCountTurn {
-            get {
-                return _maxCountTurn ?? 0;
-            }
-            set {
-                _maxCountTurn ??= value > 0 ? value : 0;
-            }
-        }
-        public Action<Vector2Int> MoveMethod {
-            get {
-                return _move;
-            }
-            set {
-                if (_move != null)
-                    throw new Exception("Move Entity is set");
-                _move = value;
-            }
-        }
-        
         public void CountTurnUpdate()
         {
-            _countTurn = MaxCountTurn;
+            CountTurn = MaxCountTurn;
         }
         public IEnumerator MakeByStep(List<Vector2Int> path, GameObject modelViewFromMove)
         {
-            if (!_isWalking && path != null && _countTurn > 0)
+            if (!_isWalking && path != null && CountTurn > 0)
             {
-                _countTurn -= 1;
+                CountTurn -= 1;
                 _isWalking = true;
                 foreach (var Element in path)
                 {

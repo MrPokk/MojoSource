@@ -1,37 +1,32 @@
-using Game.CMS_Content.Entitys;
-using Game.CMS_Content.Entitys.Components;
+using Game.CMS_Content.Entity.Type;
+using Game.CMS_Content.Entity.Type.Enemys;
+using Game.CMS_Content.Entitys.Type.Interfaces;
+using Game.CMS_Content.Entitys.Type.Player;
 using UnityEngine;
 
-namespace Game.CMS_Content.Entity.Type.Enemys
+namespace Game.CMS_Content.Entitys.Type.Enemys
 {
-    public class FrogModel : BaseEntityModel
+    public class FrogModel : BaseEntityModel, IEnemy
     {
         public FrogModel()
         {
-            BaseComponent.ViewComponent.LoadView<FrogView>(PathResources.ENTITY);
-            BaseComponent.MoveComponent.MoveMethod = MoveTo;
-            BaseComponent.MoveComponent.MaxCountTurn = 2;
+            Define<DraggableComponent>(out DraggableComponent draggableComponent);
+            draggableComponent.Drag = dragObject => dragObject.transform.position = MouseInteraction.MousePose;
+            Components.View.LoadView<FrogView>(PathResources.ENTITY);
+            Components.Move.Init(2, MoveTo);
         }
-        
+
         private void MoveTo(Vector2Int positionTo)
         {
-            var Entitys = CMS.Get<BaseEntityController>().GetEntities();
+            var IsStartPosition = GridUtility.TryGetPositionInGrid(View.transform.position, out var StartPosition);
+            var EndPosition = GridUtility.IsWithinGrid(positionTo);
 
-            foreach (var AllEntity in Entitys.Values)
-            {
-                if (AllEntity is not PlayerModel Player)
-                    continue;
+            if (!IsStartPosition || !EndPosition)
+                return;
 
-                var IsPlayerPoseInGrid = GridUtility.TryGetPositionInGrid(Player.View.transform.position, out var player);
-                var IsEnemyPoseInGrid = GridUtility.TryGetPositionInGrid(View.transform.position, out var enemy);
+            var Path = AStar.TryGetPathFind(StartPosition, positionTo, GameData<Main>.Boot.GridController.Grid.Array);
 
-                if (!IsPlayerPoseInGrid || !IsEnemyPoseInGrid)
-                    return;
-
-                var PathToPlayer = AStar.TryGetPathFind(player, enemy);
-
-                GameData<Main>.Corotine.StartCoroutine(BaseComponent.MoveComponent.MakeByStep(PathToPlayer, View));
-            }
+            GameData<Main>.Corotine.StartCoroutine(Components.Move.MakeByStep(Path, View));
         }
     }
 }

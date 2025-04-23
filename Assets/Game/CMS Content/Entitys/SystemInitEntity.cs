@@ -1,9 +1,10 @@
 using Game.CMS_Content.Entity.Type;
 using Game.CMS_Content.Entity.Type.Enemys;
-using Game.CMS_Content.Entitys;
+using Game.CMS_Content.Entitys.Type.Enemys;
+using Game.CMS_Content.Entitys.Type.Player;
 using UnityEngine;
 
-namespace Game.CMS_Content.Entity
+namespace Game.CMS_Content.Entitys
 {
     public class SystemInitEntity : SystemInit
     {

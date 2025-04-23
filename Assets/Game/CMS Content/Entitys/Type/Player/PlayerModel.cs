@@ -1,16 +1,14 @@
-using Game.CMS_Content.Entitys.Components;
+using Game.CMS_Content.Entity.Type;
 using UnityEngine;
-using NotImplementedException = System.NotImplementedException;
 
-namespace Game.CMS_Content.Entity.Type
+namespace Game.CMS_Content.Entitys.Type.Player
 {
     public class PlayerModel : BaseEntityModel
     {
         public PlayerModel()
         {
-            BaseComponent.ViewComponent.LoadView<PlayerView>(PathResources.ENTITY);
-            BaseComponent.MoveComponent.MoveMethod = MoveTo;
-            BaseComponent.MoveComponent = new MoveComponent();
+            Components.View.LoadView<PlayerView>(PathResources.ENTITY);
+            Components.Move.Init(2,MoveTo);
         }
      
         
@@ -24,7 +22,7 @@ namespace Game.CMS_Content.Entity.Type
 
             var Path = AStar.TryGetPathFind(StartPosition, positionTo, GameData<Main>.Boot.GridController.Grid.Array);
 
-            GameData<Main>.Corotine.StartCoroutine(BaseComponent.MoveComponent.MakeByStep(Path, View));
+            GameData<Main>.Corotine.StartCoroutine(Components.Move.MakeByStep(Path, View));
         }
     }
 }

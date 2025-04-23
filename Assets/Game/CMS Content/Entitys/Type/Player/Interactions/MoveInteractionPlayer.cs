@@ -1,11 +1,12 @@
 using Game.CMS_Content.Entity.Type;
 using Game.CMS_Content.Entitys.Components;
 using Game.Script.Global_Interactions;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Game.CMS_Content.Entitys.Type.Player.Interactions
 {
-    public class MoveInteraction : BaseInteraction, IEnterInStart, IExitInGame
+    public class MoveInteractionPlayer : BaseInteraction, IEnterInStart, IExitInGame
     {
         private bool _isSelect;
         private ModelView _selectView;
@@ -43,5 +44,6 @@ namespace Game.CMS_Content.Entitys.Type.Player.Interactions
             _isSelect = false;
             MouseInteraction.OnClickDown -= SelectingGridNode;
         }
+
     }
 }

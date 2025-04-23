@@ -7,15 +7,15 @@ namespace Game.CMS_Content.Entitys.Components
     public class CardInsideComponent : IComponent
     {
 
-        private List<BaseCardModel> InsideCard = new List<BaseCardModel>();
+        private readonly List<BaseCardModel> _insideCard = new List<BaseCardModel>();
         
         public IReadOnlyList<BaseCardModel> GetAllCard<T>() where T : BaseCardModel
         {
-            return InsideCard.FindAll(card => card is T);
+            return _insideCard.FindAll(card => card is T);
         }
         public IReadOnlyList<BaseCardModel> GetAllCard()
         {
-            return InsideCard;
+            return _insideCard;
         }
         public void AddCard(ModelView draggableObject)
         {
@@ -25,7 +25,7 @@ namespace Game.CMS_Content.Entitys.Components
 
         public void AddCard(BaseCardModel cardModel)
         {
-            InsideCard.Add(cardModel);
+            _insideCard.Add(cardModel);
         }
     }
 }

@@ -12,3 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b27cec01f29498a8b06354c43b6ef99, type: 3}
   m_Name: AnimationSetting
   m_EditorClassIdentifier: 
+  <SpeedMove>k__BackingField: 0.3
