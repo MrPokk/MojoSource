@@ -1,14 +1,16 @@
 using Game.CMS_Content.Cards;
 using Game.CMS_Content.Cards.Type;
 using System;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Object = UnityEngine.Object;
 #if DEBUG || UNITY_EDITOR
 public class DebugUtility : MonoBehaviour
 {
 
     public static event Action DebugGizmos;
-    
+
     private static DebugUtility _instance = null;
     public static DebugUtility Instance {
         get {
@@ -23,7 +25,6 @@ public class DebugUtility : MonoBehaviour
             return _instance = FindDebugObject;
         }
     }
-    
 
     private void OnDrawGizmos()
     {
@@ -38,5 +39,15 @@ public class DebugInteraction : BaseInteraction, IEnterInUpdate
     {
         if (Input.GetKeyDown(KeyCode.K))
             CMS.Get<BaseCardController>().GiveCardInHand<ArsonCard>();
+        if (Input.GetKeyDown(KeyCode.R))
+            LoadSceneRoot();
+    }
+
+    private void LoadSceneRoot()
+    {
+        var sceneRoot = SceneManager.CreateScene("Root");
+        SceneManager.SetActiveScene(sceneRoot);
+        
+        SceneManager.LoadScene(0);
     }
 }

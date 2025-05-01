@@ -1,4 +1,6 @@
 using Game.CMS_Content.Entity.Type;
+using Game.Script.Component_Grid.Component_Pathfind;
+using Game.Script.ECS.Global_Components;
 using UnityEngine;
 
 namespace Game.CMS_Content.Entitys.Type.Player
@@ -7,22 +9,28 @@ namespace Game.CMS_Content.Entitys.Type.Player
     {
         public PlayerModel()
         {
+            Define<RaycastingComponent>(out var raycastCommand);
+
             Components.View.LoadView<PlayerView>(PathResources.ENTITY);
-            Components.Move.Init(2,MoveTo);
+
+            Components.Health.Init(20);
+            Components.Move.Init(2, MoveTo);
+
         }
-     
-        
+
+
         private void MoveTo(Vector2Int positionTo)
         {
-            var IsStartPosition = GridUtility.TryGetPositionInGrid(View.transform.position, out var StartPosition);
-            var EndPosition = GridUtility.IsWithinGrid(positionTo);
+            var isStartPosition = GridUtility.TryGetPositionInGrid(ViewObject.transform.position, out var startPosition);
+            var isEndPosition = GridUtility.IsWithinGrid(positionTo);
 
-            if (!IsStartPosition || !EndPosition)
+            if (!isStartPosition || !isEndPosition)
                 return;
 
-            var Path = AStar.TryGetPathFind(StartPosition, positionTo, GameData<Main>.Boot.GridController.Grid.Array);
+            var path = AStar.TryGetPathFind(startPosition, positionTo);
 
-            GameData<Main>.Corotine.StartCoroutine(Components.Move.MakeByStep(Path, View));
+            Components.Move.MakeByStep(path, startPosition, positionTo, ViewObject);
+
         }
     }
 }

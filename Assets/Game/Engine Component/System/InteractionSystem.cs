@@ -6,7 +6,7 @@ using Engin.Utility;
 
 public class Interaction
 {
- public List<BaseInteraction> InteractionList { get; private set; } = new() ;
+ public List<BaseInteraction> InteractionList { get; private set; } = new List<BaseInteraction>();
 
  public void Init()
  {

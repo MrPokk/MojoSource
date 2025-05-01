@@ -1,4 +1,5 @@
 using Engin.Utility;
+using Game.CMS_Content.Entitys.Components;
 using UnityEngine;
 
 namespace Game.CMS_Content.Cards.Type
@@ -10,8 +11,14 @@ namespace Game.CMS_Content.Cards.Type
             Define(out ViewComponent viewComponent);
             viewComponent.LoadView<BaseCardView>(PathResources.CARD);
 
-            CardComponentBase.PriorityCardComponent.Priority = Priority.High;
-            CardComponentBase.ActionCardComponent.AbilityCard = () => { Debug.Log("dssa"); };
+            Components.PriorityCardComponent.Priority = Priority.High;
+            Components.ActionCardComponent.AbilityCard = AbilityCard;
         }
+        private void AbilityCard(CMSEntity sourceEntity)
+        {
+            sourceEntity.GetComponent<HealthComponent>(out var healthComponent);
+            healthComponent.Decrease(5);
+        }
+     
     }
 }

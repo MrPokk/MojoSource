@@ -1,4 +1,5 @@
 using Game.CMS_Content.Entity;
+using Game.Engine_Component.CMS;
 using UnityEngine;
 
 namespace Game.CMS_Content.Cards

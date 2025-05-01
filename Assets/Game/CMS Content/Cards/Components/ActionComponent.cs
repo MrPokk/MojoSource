@@ -5,8 +5,8 @@ namespace Game.CMS_Content.Cards.Components
 {
     public class ActionComponent : IComponent
     {
-        private Action _abilityCard;
-        public Action AbilityCard {
+        private Action<CMSEntity> _abilityCard;
+        public Action<CMSEntity> AbilityCard {
             get {
                 return _abilityCard;
             }

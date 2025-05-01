@@ -1,5 +1,7 @@
 using Engin.Utility;
 using Game.CMS_Content.Cards;
+using JetBrains.Annotations;
+using System;
 using System.Collections.Generic;
 
 namespace Game.CMS_Content.Entitys.Components
@@ -16,6 +18,17 @@ namespace Game.CMS_Content.Entitys.Components
         public IReadOnlyList<BaseCardModel> GetAllCard()
         {
             return _insideCard;
+        }
+
+        public void RemoveAllCard()
+        {
+            _insideCard.Clear();
+        }
+        public void RemoveCard([NotNull] BaseCardModel cardModel)
+        {
+            if (cardModel == null || !_insideCard.Contains(cardModel))
+                throw new ArgumentNullException(nameof(cardModel));
+            _insideCard.Remove(cardModel);
         }
         public void AddCard(ModelView draggableObject)
         {

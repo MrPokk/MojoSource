@@ -1,11 +1,13 @@
 using Engin.Utility;
 using Game.CMS_Content;
-using Game.Script.Utility;
+using Game.Script.ECS.Global_Interactions;
+using Game.Script.Utility.FromGame;
 using System;
 using UnityEngine;
 public class Main : MonoBehaviour, IMain
 {
     private Interaction _interact;
+    private TurnInteraction _turnInteraction;
     
     public GridView GridView;
     public HandCards HandCards;
@@ -20,32 +22,39 @@ public class Main : MonoBehaviour, IMain
 
         GameData<Main>.Boot = this;
 
+
         GridController = new GridController(new(12, 7), 0.8f, GridView);
 
         MainCamera = Camera.main;
 
-        GameData<Main>.Corotine  = new GameObject("[Coroutine]").AddComponent<CoroutineUtility>();
-        DontDestroyOnLoad(GameData<Main>.Corotine.gameObject);
+        var coroutine = new GameObject("[Coroutine]").AddComponent<CoroutineUtility>();
+        GameData<Main>.Coroutine = new(coroutine);
 
-        var Init = _interact.FindAll<IInitInMain>();
-        foreach (var Element in Init)
+        var init = _interact.FindAll<IInitInMain>();
+        foreach (var element in init)
         {
-            Element.Init();
+            element.Init();
         }
 
-        var Starts = _interact.FindAll<IEnterInStart>();
-        foreach (var Element in Starts)
+        var starts = _interact.FindAll<IEnterInStart>();
+        foreach (var element in starts)
         {
-            Element.Start();
+            element.Start();
         }
         
         _interact.FindAll<IEnterInUpdate>();
         _interact.FindAll<IExitInGame>();
         _interact.FindAll<IEnterInPhysicUpdate>();
         _interact.FindAll<IExitInGame>();
-        
+        NextStep();
+    }
+
+    private void NextStep()
+    {
         _interact.FindAll<IEnterInNextTurn>();
         
+        _turnInteraction = new TurnInteraction();
+        GameData<Main>.Turn = _turnInteraction;
     }
 
     
@@ -94,7 +103,7 @@ public class Main : MonoBehaviour, IMain
     private void FixedUpdate()
     {
         PhysicUpdateGame(Time.deltaTime);
-    }
+    } 
 
     private void OnDestroy()
     {

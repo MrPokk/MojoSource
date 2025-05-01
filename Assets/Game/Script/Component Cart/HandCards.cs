@@ -21,34 +21,34 @@ public class HandCards : MonoBehaviour
         SetPoseTile();
     }
 
-    public void Add(BaseCardView Card)
+    public void Add(BaseCardView card)
     {
-        if (Card)
-            _cards.Add(Card);
+        if (card)
+            _cards.Add(card);
     }
 
-    public void Remove(BaseCardView Card)
+    public void Remove(BaseCardView card)
     {
-        if (Card)
-            _cards.Remove(Card);
+        if (card)
+            _cards.Remove(card);
     }
 
     private void SetPoseTile()
     {
-        float Size = _maxSpacing * _cards.Count;
+        float size = _maxSpacing * _cards.Count;
 
-        if (Size < _maxSize)
+        if (size < _maxSize)
             _spacing = _maxSpacing;
         else
-            _spacing = _maxSize / Size * _maxSize;
+            _spacing = _maxSize / size * _maxSize;
 
         for (int i = 0; i < _cards.Count; i++)
         {
-            var Offset = new Vector3(0, (i - _cards.Count / 2.2f) * _spacing, 0);
+            var offset = new Vector3(0, (i - _cards.Count / 2.2f) * _spacing, 0);
             if (_axisSwap)
-                Offset = new Vector3(Offset.y, Offset.x, Offset.z);
+                offset = new Vector3(offset.y, offset.x, offset.z);
 
-            _cards[i].gameObject.transform.position = transform.position + Offset;
+            _cards[i].gameObject.transform.position = transform.position + offset;
         }
     }
 }

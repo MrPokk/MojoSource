@@ -2,8 +2,9 @@ using Game.CMS_Content.Entitys.Components;
 using Game.CMS_Content.Entitys.Type.Interfaces;
 using Game.CMS_Content.Entitys.Type.Player;
 using Game.Script.Utility;
+using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace Game.CMS_Content.Entitys.Interactions
@@ -12,22 +13,41 @@ namespace Game.CMS_Content.Entitys.Interactions
     {
         public void UpdateTurn()
         {
-            IEnumerable<CMSEntity> AllEntities = CMS.Get<BaseEntityController>().GetEntities().Values;
-            var PlayerEntityModel = AllEntities.Where(x => x is PlayerModel);
+            IEnumerable<CMSEntity> allEntities = CMS.Get<BaseEntityController>().GetEntities().Values;
 
-            foreach (var Entity in AllEntities)
+            Dictionary<MoveComponent, CMSEntity> enemies = new Dictionary<MoveComponent, CMSEntity>();
+
+            foreach (var entity in allEntities)
             {
-                Entity.GetComponent<MoveComponent>(out var moveComponent);
+                entity.GetComponent<MoveComponent>(out var moveComponent);
                 moveComponent.CountTurnUpdate();
 
-                if (Entity is IEnemy)
-                {
-                    var NearestPlayer = TransformUtility.FindToNearest<PlayerModel>(Entity.GetView());
-                    var PositionPlayer = NearestPlayer.GetViewPosition2D();
-                    GridUtility.TryGetPositionInGrid(PositionPlayer, out var positionInGrid);
-                    moveComponent.MoveMethod.Invoke(positionInGrid);
-                }
+                if (entity is IEnemy)
+                    enemies.Add(moveComponent,entity);
+            }
+
+            GameData<Main>.Coroutine.Run(ProcessEnemyMoves(enemies));
+        }
+
+        private IEnumerator ProcessEnemyMoves(Dictionary<MoveComponent, CMSEntity>enemies)
+        {
+            yield return new WaitForSeconds(1f);
+            
+            foreach (var enemy in enemies)
+            {
+                MoveEnemy(enemy.Key,enemy.Value);
+                yield return new WaitWhile(() => enemy.Key.IsWalking);
             }
         }
+
+        private void MoveEnemy(MoveComponent moveComponent, CMSEntity entity)
+        {
+            var nearestPlayer = TransformUtility.FindToNearest<PlayerModel>(entity.GetView());
+            var positionPlayer = nearestPlayer.GetViewPosition2D();
+            GridUtility.TryGetPositionInGrid(positionPlayer, out var positionInGrid);
+            moveComponent.MoveMethod?.Invoke(positionInGrid);
+        }
     }
+
+
 }

@@ -1,9 +1,5 @@
 using Engin.Utility;
-using Game.CMS_Content.Cards;
 using System.Collections;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using UnityEngine;
 
 public abstract class BaseInteraction 
 {

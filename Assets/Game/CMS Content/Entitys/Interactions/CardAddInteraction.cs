@@ -16,18 +16,17 @@ namespace Game.CMS_Content.Entitys.Interactions
         public void Stop()
         {
             DraggableInteraction.DropObject -= DoCheckIsCard;
-
         }
         private void DoCheckIsCard(ModelView cardView)
         {
             if (!cardView || cardView.GetModel() is not BaseCardModel cardModel)
                 return;
             
-            var NearestEntity = TransformUtility.FindToNearest<CMSEntity,CardInsideComponent>(cardView);
-            var NearestDistance = Vector2.Distance(cardView.transform.position, NearestEntity.GetViewPosition2D());
+            var nearestEntity = TransformUtility.FindToNearest<CMSEntity,CardInsideComponent>(cardView);
+            var nearestDistance = Vector2.Distance(cardView.transform.position, nearestEntity.GetViewPosition2D());
               
-            if (NearestDistance <= 1f)
-                AddCard(NearestEntity, cardModel);
+            if (nearestDistance <= 1f)
+                AddCard(nearestEntity, cardModel);
         }
 
         private void AddCard(CMSEntity entityModel, BaseCardModel cardModel)

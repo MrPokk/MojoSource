@@ -1,6 +1,6 @@
 using Engin.Utility;
 
-namespace Game.CMS_Content
+namespace Game.Script.ECS.Global_Components
 {
     public class RaycastingComponent : IComponent
     {

@@ -20,11 +20,11 @@ public class GridView : ModelView
         {
             for (int y = 0; y < Size.y; y++)
             {
-                Gizmos.DrawLine(GridController.Grid.ConvertingPosition(new Vector2(x, y)), GridController.Grid.ConvertingPosition(new Vector2(x, y + 1)));
-                Gizmos.DrawLine(GridController.Grid.ConvertingPosition(new Vector2(x, y)), GridController.Grid.ConvertingPosition(new Vector2(x + 1, y)));
+                Gizmos.DrawLine(GridUtility.ConvertingPosition(new Vector2(x, y)), GridUtility.ConvertingPosition(new Vector2(x, y + 1)));
+                Gizmos.DrawLine(GridUtility.ConvertingPosition(new Vector2(x, y)), GridUtility.ConvertingPosition(new Vector2(x + 1, y)));
             }
-            Gizmos.DrawLine(GridController.Grid.ConvertingPosition(new Vector2(0, Size.y)), GridController.Grid.ConvertingPosition(new Vector2(Size.x, Size.y)));
-            Gizmos.DrawLine(GridController.Grid.ConvertingPosition(new Vector2(Size.x, 0)), GridController.Grid.ConvertingPosition(new Vector2(Size.x, Size.y)));
+            Gizmos.DrawLine(GridUtility.ConvertingPosition(new Vector2(0, Size.y)), GridUtility.ConvertingPosition(new Vector2(Size.x, Size.y)));
+            Gizmos.DrawLine(GridUtility.ConvertingPosition(new Vector2(Size.x, 0)), GridUtility.ConvertingPosition(new Vector2(Size.x, Size.y)));
         }
     }
       #endif

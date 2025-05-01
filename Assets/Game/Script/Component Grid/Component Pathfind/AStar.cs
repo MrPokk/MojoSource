@@ -1,200 +1,166 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
-public class AStar
+namespace Game.Script.Component_Grid.Component_Pathfind
 {
-    private HashSet<Vector2Int> _open;
-    private HashSet<Vector2Int> _close;
-
-
-    private Dictionary<Vector2Int, Vector2Int> _closed;
-
-    private GridNode _current;
-
-    private GridNode _endNode;
-    private GridNode _startNode;
-
-    private GridNode[,] _grid;
-
-    private readonly static Vector2Int[] _neighborsOffset = new[]
+    public partial class AStar
     {
-        Vector2Int.right,
-        Vector2Int.left,
+        private HashSet<Vector2Int> _open;
+        private HashSet<Vector2Int> _close;
 
-        Vector2Int.up,
-        Vector2Int.down,
+        private Dictionary<Vector2Int, Vector2Int> _closed;
 
-        new Vector2Int(-1, -1),
-        new Vector2Int(-1, 1),
-        new Vector2Int(1, -1),
-        new Vector2Int(1, 1),
-    };
+        private GridNode _current;
 
-    
-    public static List<Vector2Int> TryGetPathFind(Vector2Int start, Vector2Int end)
-    {
-        if (GridUtility.GridModel.Array == null)
+        private GridNode _endNode;
+        private GridNode _startNode;
+
+        private GridNode[,] _grid;
+
+        private readonly static Vector2Int[] _neighborsOffset = new[]
         {
-            Debug.LogError($"ERROR: {nameof(GridUtility.GridModel)}");
-            return null;
+            Vector2Int.right,
+            Vector2Int.left,
+
+            Vector2Int.up,
+            Vector2Int.down,
+
+            new Vector2Int(-1, -1),
+            new Vector2Int(-1, 1),
+            new Vector2Int(1, -1),
+            new Vector2Int(1, 1),
+        };
+
+
+
+        public static List<Vector2Int> TryGetPathFind(Vector2Int start, Vector2Int end)
+        {
+            return ValidatePath(start, end) ? new AStar().Find(start, end, GridUtility.GridModel.Array) : null;
         }
 
-        if (!GridUtility.IsWithinGrid(start, GridUtility.GridModel.Array) || !GridUtility.IsWithinGrid(end, GridUtility.GridModel.Array))
+        private List<Vector2Int> Find(Vector2Int startNode, Vector2Int endNode, GridNode[,] grid)
         {
-            Debug.LogWarning("WARNING: start or end are not within the grid");
-            return null;
-        }
-        
-        if (start == end)
-        {
-            Debug.LogWarning("WARNING: start or end are not within the grid");
-            return null;
-        }
+            _grid = grid.Clone() as GridNode[,];
 
-        return new AStar().Find(start, end, GridUtility.GridModel.Array);
-    }
-    
+            _open = new HashSet<Vector2Int>();
+            _close = new HashSet<Vector2Int>();
 
-    public static List<Vector2Int> TryGetPathFind(Vector2Int start, Vector2Int end, GridNode[,] grid)
-    {
-        if (grid == null)
-        {
-            Debug.LogError($"ERROR: {nameof(grid)}");
-            return null;
-        }
+            _startNode = _grid[startNode.x, startNode.y];
+            _startNode.GCost = 0;
+            _startNode.HCost = CalculateHCost(startNode, endNode);
 
-        if (!GridUtility.IsWithinGrid(start, grid) || !GridUtility.IsWithinGrid(end, grid))
-        {
-            Debug.LogWarning("WARNING: start or end are not within the grid");
-            return null;
-        }
-        
-        if (start == end)
-        {
-            Debug.LogWarning("WARNING: start or end are not within the grid");
-            return null;
-        }
+            _grid[startNode.x, startNode.y] = _startNode;
 
-        return new AStar().Find(start, end, grid);
-    }
+            _open.Add(_startNode.Index);
 
-    private List<Vector2Int> Find(Vector2Int startNode, Vector2Int endNode, GridNode[,] grid)
-    {
-        _grid = grid.Clone() as GridNode[,];
+            _endNode = grid[endNode.x, endNode.y];
+            _grid[endNode.x, endNode.y] = _endNode;
 
-        _open = new HashSet<Vector2Int>();
-        _close = new HashSet<Vector2Int>();
-
-        _startNode = _grid[startNode.x, startNode.y];
-        _startNode.GCost = 0;
-        _startNode.HCost = CalculateHCost(startNode, endNode);
-
-        _grid[startNode.x, startNode.y] = _startNode;
-
-        _open.Add(_startNode.Index);
-
-        _endNode = grid[endNode.x, endNode.y];
-        _grid[endNode.x, endNode.y] = _endNode;
-
-        while (_open.Count > 0)
-        {
-            _current = GetLowerFCost(_open);
-            _grid[_current.Index.x, _current.Index.y] = _current;
-
-            _open.Remove(_current.Index);
-            _close.Add(_current.Index);
-
-            if (_current.Index == _endNode.Index)
+            while (_open.Count > 0)
             {
-                return GetPath(_endNode.Index);
-            }
+                _current = GetLowerFCost(_open);
+                _grid[_current.Index.x, _current.Index.y] = _current;
 
-            var Neighbors = GetIndexNeighbors(_current.Index);
-            foreach (var Neighbor in Neighbors)
-            {
-               
-                GridNode NeighborNode = _grid[Neighbor.x, Neighbor.y];
+                _open.Remove(_current.Index);
+                _close.Add(_current.Index);
 
-                int TentativeGCost = _current.GCost + CalculateHCost(_current.Index, Neighbor);
-                if (TentativeGCost < NeighborNode.GCost)
+                if (_current.Index == _endNode.Index)
                 {
-                    NeighborNode.IndexParent = _current.Index;
-                    NeighborNode.GCost = TentativeGCost;
-                    NeighborNode.HCost = CalculateHCost(NeighborNode.Index, _endNode.Index);
+                    return GetPath(_endNode.Index);
+                }
 
-                    _grid[NeighborNode.Index.x, NeighborNode.Index.y] = NeighborNode;
+                var Neighbors = GetIndexNeighbors(_current.Index);
+                foreach (var Neighbor in Neighbors)
+                {
 
-                    _open.Add(NeighborNode.Index);
+                    GridNode NeighborNode = _grid[Neighbor.x, Neighbor.y];
+
+                    int TentativeGCost = _current.GCost + CalculateHCost(_current.Index, Neighbor);
+                    if (TentativeGCost < NeighborNode.GCost)
+                    {
+                        NeighborNode.IndexParent = _current.Index;
+                        NeighborNode.GCost = TentativeGCost;
+                        NeighborNode.HCost = CalculateHCost(NeighborNode.Index, _endNode.Index);
+
+                        _grid[NeighborNode.Index.x, NeighborNode.Index.y] = NeighborNode;
+
+                        _open.Add(NeighborNode.Index);
+                    }
                 }
             }
+
+            return null;
         }
 
-        throw new Exception("END PATH FIND ERROR");
-    }
-
-    private int CalculateHCost(Vector2Int startNode, Vector2Int endNode)
-    {
-        return (int)Vector2Int.Distance(startNode, endNode);
-    }
-
-    private List<Vector2Int> GetPath(Vector2Int endNodeIndex)
-    {
-        List<Vector2Int> Path = new List<Vector2Int>();
-
-        GridNode CurrentNode = GridUtility.GetNodeByIndex(endNodeIndex, _grid);
-        Path.Add(CurrentNode.Index);
-
-        while (CurrentNode.IndexParent != Vector2Int.one * -1)
+        private int CalculateHCost(Vector2Int startNode, Vector2Int endNode)
         {
-            GridNode CameFromNode = GridUtility.GetNodeByIndex(CurrentNode.IndexParent, _grid);
-            Path.Add(CameFromNode.Index);
-            CurrentNode = CameFromNode;
+            return (int)Vector2Int.Distance(startNode, endNode);
         }
 
-        Path.Reverse();
-
-        return Path;
-    }
-
-    private List<Vector2Int> GetIndexNeighbors(Vector2Int currentNodeIndex)
-    {
-        var NeighborAll = new List<Vector2Int>();
-
-        foreach (Vector2Int NeighborsOffset in _neighborsOffset)
+        private List<Vector2Int> GetPath(Vector2Int endNodeIndex)
         {
-            var NeighborIndex = currentNodeIndex + NeighborsOffset;
+            List<Vector2Int> Path = new List<Vector2Int>();
 
-            if (GridUtility.IsWithinGrid(NeighborIndex, _grid) && IsNodeWalkable(NeighborIndex))
-                NeighborAll.Add(NeighborIndex);
+            GridNode CurrentNode = GridUtility.GetNodeByIndex(endNodeIndex, _grid);
+            Path.Add(CurrentNode.Index);
+
+            while (CurrentNode.IndexParent != Vector2Int.one * -1)
+            {
+                GridNode CameFromNode = GridUtility.GetNodeByIndex(CurrentNode.IndexParent, _grid);
+                Path.Add(CameFromNode.Index);
+                CurrentNode = CameFromNode;
+            }
+
+            Path.Reverse();
+
+            return Path;
         }
 
-        return NeighborAll;
-    }
-
-    private bool IsNodeWalkable(Vector2Int indexNode)
-    {
-        //TODO: Добавить проверку
-        return true;
-    }
-
-
-    //TODO: Возможно SorterSet Что бы сразу в список доступных нод добавлять ноды по цене FCost
-    private GridNode GetLowerFCost(HashSet<Vector2Int> nodeArray)
-    {
-        var IndexLowerNode = GridUtility.GetNodeByIndex(nodeArray.First(), _grid);
-        foreach (var NodeIndex in nodeArray)
+        public List<Vector2Int> GetIndexNeighbors(Vector2Int currentNodeIndex)
         {
-            var NodeElement = GridUtility.GetNodeByIndex(NodeIndex, _grid);
+            var NeighborAll = new List<Vector2Int>();
 
-            if (NodeElement.FCost < IndexLowerNode.FCost)
-                IndexLowerNode = NodeElement;
+            foreach (Vector2Int NeighborsOffset in _neighborsOffset)
+            {
+                var NeighborIndex = currentNodeIndex + NeighborsOffset;
+
+                if (GridUtility.IsWithinGrid(NeighborIndex, _grid) && IsNodeWalkable(NeighborIndex, _grid))
+                    NeighborAll.Add(NeighborIndex);
+            }
+
+            return NeighborAll;
         }
 
-        return IndexLowerNode;
-    }
+        private bool IsNodeWalkable(Vector2Int indexNode, GridNode[,] grid)
+        {
+            var gridNode = GridUtility.GetNodeByIndex(indexNode, grid);
+            if (gridNode.Type == GridNode.TypeNode.SimplyNode)
+            {
+                return true;
+            }
+            else if (gridNode.Type == GridNode.TypeNode.Wall)
+            {
+                return false;
+            }
+            return false;
+        }
 
+        private GridNode GetLowerFCost(HashSet<Vector2Int> nodeArray)
+        {
+            var IndexLowerNode = GridUtility.GetNodeByIndex(nodeArray.First(), _grid);
+            foreach (var NodeIndex in nodeArray)
+            {
+                var NodeElement = GridUtility.GetNodeByIndex(NodeIndex, _grid);
+
+                if (NodeElement.FCost < IndexLowerNode.FCost)
+                    IndexLowerNode = NodeElement;
+            }
+
+            return IndexLowerNode;
+        }
+
+    }
 }

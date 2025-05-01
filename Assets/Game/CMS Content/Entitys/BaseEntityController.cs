@@ -1,4 +1,7 @@
 using Game.CMS_Content.Entity;
+using Game.Engine_Component.CMS;
+using Game.Script.Component_Grid.Component_Pathfind;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Game.CMS_Content.Entitys
@@ -12,21 +15,21 @@ namespace Game.CMS_Content.Entitys
         {
             _positionCurrent = positionGrid;
 
+            GridUtility.SetTypeInGrid(positionGrid, GridNode.TypeNode.Wall);
+
             SpawnEntity<T>();
         }
 
         protected override void SpawnEntity<T>()
         {
-            Create<T>(out var Entity);
+            Create<T>(out var entity);
 
-            var PositionInGrid = GridUtility.TryGetPositionInGrid(_positionCurrent, out Vector3 positionInGrid);
-            if (PositionInGrid)
-            {
-                positionInGrid += (Entity.transform.localScale / 2);
+            var inGrid = GridUtility.TryGetPositionInGrid(_positionCurrent, out Vector3 positionInGrid);
+            if (!inGrid)
+                return;
 
-                if (PositionInGrid != null)
-                    Entity.transform.position = positionInGrid;
-            }
+            positionInGrid += (entity.transform.localScale / 2);
+            entity.transform.position = positionInGrid;
         }
     }
 }

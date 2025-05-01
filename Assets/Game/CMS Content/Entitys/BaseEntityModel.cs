@@ -6,27 +6,35 @@ namespace Game.CMS_Content.Entitys
 {
     public abstract class BaseEntityModel : CMSEntity
     {
-        protected readonly BaseEntityComponent Components;
-        protected internal GameObject View => Components.View.ViewModel.gameObject;
+        public BaseEntityComponent Components { get; protected set; }
+        protected GameObject ViewObject => Components.View.ViewModel.gameObject;
         protected BaseEntityModel()
         {
             Define<ViewComponent>(out var viewComponent);
+            Define<HealthComponent>(out var healthComponent);
             Define<MoveComponent>(out var moveComponent);
             Define<CardInsideComponent>(out var cardComponent);
-            Define<RaycastingComponent>(out var raycastCommand);
 
-            Components = new BaseEntityComponent(moveComponent, viewComponent, cardComponent);
+            Components = new BaseEntityComponent(moveComponent, viewComponent, cardComponent, healthComponent);
         }
 
-        protected class BaseEntityComponent : IComponent
+        public class BaseEntityComponent : IComponent
         {
             public readonly MoveComponent Move;
             public readonly ViewComponent View;
             public readonly CardInsideComponent Card;
+            public readonly HealthComponent Health;
 
-            public BaseEntityComponent(MoveComponent moveComponent, ViewComponent viewComponent, CardInsideComponent cardComponent)
+
+            public BaseEntityComponent(
+                MoveComponent moveComponent, 
+                ViewComponent viewComponent, 
+                CardInsideComponent cardComponent,
+                HealthComponent healthComponent
+                )
             {
                 View = viewComponent;
+                Health = healthComponent;
                 Move = moveComponent;
                 Card = cardComponent;
             }

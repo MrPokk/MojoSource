@@ -1,3 +1,4 @@
+using Game.Script.Component_Grid.Component_Pathfind;
 using UnityEngine;
 public class GridModel<TGridObject>
 {
@@ -18,19 +19,7 @@ public class GridModel<TGridObject>
 
         Array = new TGridObject[size.x, size.y];
     }
-
-    public Vector3 ConvertingPosition(Vector2 XY)
-    {
-        return new Vector3(XY.x, XY.y, 0) * CellSize + (Vector3)PositionOrigin;
-    }
-
-    public Vector2Int ConvertingPosition(Vector3 worldPose)
-    {
-        int X = Mathf.FloorToInt((worldPose - (Vector3)PositionOrigin).x / CellSize);
-        int Y = Mathf.FloorToInt((worldPose - (Vector3)PositionOrigin).y / CellSize);
-        return new Vector2Int(X, Y);
-    }
-    public void SetValueInGrid(Vector2Int XY, TGridObject value)
+    public void SetValue(Vector2Int XY, TGridObject value)
     {
         if (XY is { x: >= 0, y: >= 0 } && XY.x < Size.x && XY.y < Size.y)
         {

@@ -1,4 +1,5 @@
 using Engin.Utility;
+using Game.Script.ECS.Global_Components;
 using System;
 using UnityEngine;
 

@@ -5,7 +5,7 @@ namespace Game.CMS_Content.Cards
 {
     public abstract class BaseCardModel : CMSEntity
     {
-        protected readonly BaseCardComponent CardComponentBase;
+        public BaseCardComponent Components { get; private set; }
         protected BaseCardModel()
         {
             Define<ActionComponent>(out var actionCardComponent);
@@ -24,12 +24,12 @@ namespace Game.CMS_Content.Cards
                     GameData<Main>.Boot.HandCards.Add(baseCardView);
             };
 
-            CardComponentBase = new BaseCardComponent(actionCardComponent, priorityCardComponent);
+            Components = new BaseCardComponent(actionCardComponent, priorityCardComponent);
         }
 
 
 
-        protected class BaseCardComponent : IComponent
+        public class BaseCardComponent : IComponent
         {
             public readonly ActionComponent ActionCardComponent;
             public readonly PriorityCardComponent PriorityCardComponent;

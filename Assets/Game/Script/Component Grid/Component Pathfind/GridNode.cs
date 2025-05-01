@@ -1,20 +1,33 @@
 using UnityEngine;
-public struct GridNode
+
+namespace Game.Script.Component_Grid.Component_Pathfind
 {
-    public GridNode(Vector2Int index) : this()
+    public struct GridNode
     {
-        Index = index;
-        IndexParent = Vector2Int.one * -1; // Multiply by -1 because there may not be a leading node for the node.
+        public GridNode(Vector2Int index) : this()
+        {
+            Index = index;
+            IndexParent = Vector2Int.one * -1; // Multiply by -1 because there may not be a leading node for the node.
+            Type = TypeNode.SimplyNode;
 
-        GCost = int.MaxValue;
-        HCost = 0;
+            GCost = int.MaxValue;
+            HCost = 0;
+        }
+
+
+        public enum TypeNode
+        {
+            SimplyNode = 1,
+            Wall = 2,
+        }
+        public TypeNode Type;
+
+        public Vector2Int Index;
+        public Vector2Int IndexParent;
+
+        public int GCost;
+        public int HCost;
+        public int FCost => GCost + HCost;
+
     }
-
-    public Vector2Int Index;
-    public Vector2Int IndexParent;
-
-    public int GCost;
-    public int HCost;
-    public int FCost => GCost + HCost;
-
 }

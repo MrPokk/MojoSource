@@ -1,4 +1,5 @@
 using Game.CMS_Content;
+using Game.Script.ECS.Global_Interactions;
 using System;
 using UnityEngine;
 

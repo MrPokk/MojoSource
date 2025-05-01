@@ -6,11 +6,11 @@ namespace Game.CMS_Content.Cards
     {
         protected override void Init()
         {
-            var Controller = CMS.Get<BaseCardController>();
+            var controller = CMS.Get<BaseCardController>();
 
-            Controller.GiveCardInHand<ArsonCard>();
-            Controller.GiveCardInHand<ArsonCard>();
-            Controller.GiveCardInHand<ArsonCard>();
+            controller.GiveCardInHand<ArsonCard>();
+            controller.GiveCardInHand<ArsonCard>();
+            controller.GiveCardInHand<ArsonCard>();
         }
     }
 }

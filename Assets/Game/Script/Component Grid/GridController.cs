@@ -1,4 +1,4 @@
-using Engin.Utility;
+using Game.Script.Component_Grid.Component_Pathfind;
 using UnityEngine;
 public class GridController
 {
@@ -15,9 +15,9 @@ public class GridController
         {
             for (int y = 0; y < gridSize.y; y++)
             {
-                Vector2Int GridPosition = new Vector2Int(x, y);
+                Vector2Int gridPosition = new Vector2Int(x, y);
                 
-                Grid.SetValueInGrid(GridPosition,new GridNode(GridPosition));
+                Grid.SetValue(gridPosition,new GridNode(gridPosition));
             }
         }
     }

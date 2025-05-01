@@ -10,11 +10,12 @@ namespace Game.CMS_Content.Entitys
     {
         protected override void Init()
         {
-            var Controller = CMS.Get<BaseEntityController>();
+            var controller = CMS.Get<BaseEntityController>();
 
-            Controller.SpawnEntityInGrid<PlayerModel>(new Vector2Int(0, 0));
-            Controller.SpawnEntityInGrid<FrogModel>(new Vector2Int(5, 5));
-
+            controller.SpawnEntityInGrid<PlayerModel>(new Vector2Int(0, 0));
+            controller.SpawnEntityInGrid<PlayerModel>(new Vector2Int(1, 1));
+            controller.SpawnEntityInGrid<FrogModel>(new Vector2Int(3, 3));
+            controller.SpawnEntityInGrid<FrogModel>(new Vector2Int(5, 1));
         }
     }
 }

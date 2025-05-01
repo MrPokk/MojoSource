@@ -1,4 +1,5 @@
 using Engin.Utility;
+using Game.Script.Component_Grid.Component_Pathfind;
 using Game.Script.Settings;
 using System;
 using System.Collections;
@@ -9,7 +10,7 @@ namespace Game.CMS_Content.Entitys.Components
 {
     public class MoveComponent : IComponent
     {
-        private bool _isWalking;
+        public bool IsWalking { get; private set; }
         public int MaxCountTurn { get; private set; }
         public int CountTurn { get; private set; }
         public Action<Vector2Int> MoveMethod { get; private set; }
@@ -27,23 +28,33 @@ namespace Game.CMS_Content.Entitys.Components
         {
             CountTurn = MaxCountTurn;
         }
-        public IEnumerator MakeByStep(List<Vector2Int> path, GameObject modelViewFromMove)
+        public void MakeByStep(List<Vector2Int> path, Vector2Int startPosition, Vector2Int endPosition, GameObject modelViewFromMove)
         {
-            if (!_isWalking && path != null && CountTurn > 0)
+            GridUtility.SetTypeInGrid(startPosition, GridNode.TypeNode.SimplyNode);
+
+            if (!IsWalking && path != null && CountTurn > 0)
             {
-                CountTurn -= 1;
-                _isWalking = true;
-                foreach (var Element in path)
+                IsWalking = true;
+                GameData<Main>.Coroutine.Run(MoveByStepsWithDelay(path, modelViewFromMove));
+            }
+            else
+                return;
+
+            GridUtility.SetTypeInGrid(endPosition, GridNode.TypeNode.Wall);
+        }
+
+        private IEnumerator MoveByStepsWithDelay(List<Vector2Int> path, GameObject modelViewFromMove)
+        {
+            if (path != null && path.Count != 0 && IsWalking && CountTurn > 0)
+            {
+                --CountTurn;
+                foreach (var element in path)
                 {
-                    modelViewFromMove.transform.position = GameData<Main>.Boot.GridController.Grid.ConvertingPosition(Element) + modelViewFromMove.transform.localScale / 2;
+                    modelViewFromMove.transform.position = GridUtility.ConvertingPosition(element) + modelViewFromMove.transform.localScale / 2;
                     yield return new WaitForSeconds(AnimationSetting.Instance.SpeedMove);
                 }
             }
-            else
-                yield break;
-
-            _isWalking = false;
+            IsWalking = false;
         }
-
     }
 }
