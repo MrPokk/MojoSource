@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 625e2d5506a20554babbdbb1a5eb5b74
+guid: 2a560e3a67be5864abec54b50681065b
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -35,7 +35,7 @@ ScriptedImporter:
     spriteMeshType: 1
     alignment: 0
     spritePivot: {x: 0.5, y: 0.5}
-    spritePixelsToUnits: 32
+    spritePixelsToUnits: 53
     spriteBorder: {x: 0, y: 0, z: 0, w: 0}
     spriteGenerateFallbackPhysicsShape: 0
     generateCubemap: 6
@@ -53,9 +53,9 @@ ScriptedImporter:
     filterMode: 0
     aniso: 1
     mipBias: 0
-    wrapU: 0
-    wrapV: 0
-    wrapW: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
     normalMap: 0
     textureFormat: 0
     maxTextureSize: 0
@@ -97,7 +97,7 @@ ScriptedImporter:
     addSortingGroup: 1
     addShadowCasters: 0
   importFileNodeState: 1
-  platformSettingsDirtyTick: 638818787104794596
+  platformSettingsDirtyTick: 638818784330447600
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -122,9 +122,9 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: Cards
+  - name: Background
     originalName: 
-    pivot: {x: 3.6541352, y: -3.441379}
+    pivot: {x: 0.5, y: 0}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -132,9 +132,9 @@ ScriptedImporter:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 133
-      height: 145
-    spriteID: 57b400c6fb3616448bd95f543026210c
+      width: 958
+      height: 540
+    spriteID: 307efc4781313734ba4036986cbc8ec8
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -144,7 +144,7 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 4, y: 4}
   spriteSheetImportData:
-  - name: Cards_0
+  - name: Background_0
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -154,9 +154,9 @@ ScriptedImporter:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 68
-      height: 77
-    spriteID: 25b77be04e0b3e946849b151961df838
+      width: 958
+      height: 540
+    spriteID: 38a47839313ef3b41a4e2799a06acc7d
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -167,21 +167,21 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   asepriteLayers:
   - layerIndex: 0
-    guid: -917059685
-    name: Cards
+    guid: -1021688250
+    name: Background
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: Cards
+    - name: Background
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
-        x: 59
-        y: 557
-        width: 68
-        height: 77
-      spriteId: 57b400c6fb3616448bd95f543026210c
+        x: 0
+        y: 0
+        width: 958
+        height: 540
+      spriteId: 307efc4781313734ba4036986cbc8ec8
     linkedCells: []
     parentIndex: -1
   platformSettings:
@@ -224,4 +224,4 @@ ScriptedImporter:
   generatePhysicsShape: 0
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 1134, y: 666}
+  canvasSize: {x: 958, y: 540}

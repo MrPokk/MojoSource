@@ -23,7 +23,7 @@ public class Main : MonoBehaviour, IMain
         GameData<Main>.Boot = this;
 
 
-        GridController = new GridController(new(12, 7), 0.8f, GridView);
+        GridController = new GridController(new(12, 5), 0.73f, GridView);
 
         MainCamera = Camera.main;
 
