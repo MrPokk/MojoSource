@@ -13,29 +13,29 @@ namespace Game.CMS_Content.Entitys.Components
         public int HealthCurrent { get; private set; }
         public void Init(int maxHealth)
         {
-            MaxHealth = maxHealth;
+            if (maxHealth > 0)
+                MaxHealth = maxHealth;
+            else
+                throw new ArgumentException("ERROR: THE VALUES MUST BE GREATER THAN 0");
+        
             HealthCurrent = MaxHealth;
         }
-
-        public void Decrease(uint countHealth)
+        
+        public void Decrease(int countHealth)
         {
             var deltaHealth = (HealthCurrent - countHealth);
-            if (deltaHealth < 0)
-                HealthCurrent = 0;
-
-            HealthCurrent = (int)deltaHealth;
+            HealthCurrent = deltaHealth <= 0 ? 0 : deltaHealth;
+            
             OnChange?.Invoke(HealthCurrent);
         }
 
-        public void Increase(uint countHealth)
+        public void Increase(int countHealth)
         {
             var deltaHealth = (HealthCurrent + countHealth);
-            if (deltaHealth > MaxHealth)
-                HealthCurrent = MaxHealth;
-            
-            HealthCurrent = (int)deltaHealth;
+            HealthCurrent = deltaHealth > MaxHealth ? MaxHealth : deltaHealth;
+
             OnChange?.Invoke(HealthCurrent);
         }
-
+        
     }
 }

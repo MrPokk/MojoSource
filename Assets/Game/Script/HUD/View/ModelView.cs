@@ -12,7 +12,7 @@ public abstract class ModelView : MonoBehaviour
     {
         foreach (var CMSManagers in CMS.GetAll<CMSManager>())
         {
-            var Entity = CMSManagers.GetEntityByID(gameObject);
+            var Entity = CMSManagers.GetEntityByID(this);
             if (Entity != null)
                 return Entity;
         }
@@ -23,7 +23,7 @@ public abstract class ModelView : MonoBehaviour
     {
         foreach (var CMSManagers in CMS.GetAll<CMSManager>())
         {
-            var Entity = CMSManagers.GetEntityByID(gameObject);
+            var Entity = CMSManagers.GetEntityByID(this);
             if (Entity != null)
                 return Entity as T;
         }

@@ -2,6 +2,7 @@ using Game.CMS_Content.Cards;
 using Game.CMS_Content.Entitys.Components;
 using Game.Script.Global_Interactions;
 using Game.Script.Utility;
+using Game.Script.Utility.FromGame;
 using UnityEngine;
 
 namespace Game.CMS_Content.Entitys.Interactions
@@ -21,10 +22,13 @@ namespace Game.CMS_Content.Entitys.Interactions
         {
             if (!cardView || cardView.GetModel() is not BaseCardModel cardModel)
                 return;
+
+            var nearestEntity = TransformUtility.FindToNearest<CMSEntity, CardInsideComponent>(cardView);
+            if (nearestEntity == null)
+                return;
             
-            var nearestEntity = TransformUtility.FindToNearest<CMSEntity,CardInsideComponent>(cardView);
             var nearestDistance = Vector2.Distance(cardView.transform.position, nearestEntity.GetViewPosition2D());
-              
+
             if (nearestDistance <= 1f)
                 AddCard(nearestEntity, cardModel);
         }
@@ -33,8 +37,8 @@ namespace Game.CMS_Content.Entitys.Interactions
         {
             entityModel.GetComponent<CardInsideComponent>(out var cardInsideComponent);
             cardInsideComponent.AddCard(cardModel);
-            
-           CMS.Get<BaseCardController>().DestroyEntity(cardModel.GetView().gameObject);
+
+            CMS.Get<BaseCardController>().DestroyEntity(cardModel.GetView());
         }
 
     }

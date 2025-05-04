@@ -6,51 +6,51 @@ public class CMS : BaseInteraction, IInitInMain
 {
     public override Priority PriorityInteraction { get => Priority.FIRST_TASK; }
 
-    private static HashSet<CMSEntity> CMSEntities;
+    private static HashSet<CMSEntity> _cmsEntities;
 
     public void Init()
     {
-        CMSEntities = new HashSet<CMSEntity>();
+        _cmsEntities = new HashSet<CMSEntity>();
 
         FindAllEntity();
     }
 
-    public static void Add(CMSEntity Entity)
+    public static void Add(CMSEntity entity)
     {
-        CMSEntities.Add(Entity);
+        _cmsEntities.Add(entity);
     }
     private static void FindAllEntity()
     {
-        var ListCMS = ReflectionUtility.FindAllImplement<CMSEntity>();
-        foreach (var Element in ListCMS)
+        var listCms = ReflectionUtility.FindAllImplement<CMSEntity>();
+        foreach (var element in listCms)
         {
-            CMSEntities.Add(Activator.CreateInstance(Element) as CMSEntity);
+            _cmsEntities.Add(Activator.CreateInstance(element) as CMSEntity);
         }
     }
 
-    public static void TryGetComponent<CMSEntityType, ComponentType>(out ComponentType refComponent) where ComponentType : class, IComponent where CMSEntityType : CMSEntity
+    public static void TryGetComponent<TCmsEntityType, TComponentType>(out TComponentType refComponent) where TComponentType : class, IComponent where TCmsEntityType : CMSEntity
     {
-        var Entity = Get<CMSEntityType>();
-        Entity.GetComponent<ComponentType>(out var componentType);
+        var entity = Get<TCmsEntityType>();
+        entity.GetComponent<TComponentType>(out var componentType);
         refComponent = componentType;
     }
 
     public static T Get<T>() where T : CMSEntity
     {
-        foreach (var Element in CMSEntities)
+        foreach (var element in _cmsEntities)
         {
-            if (Element is T ElementData)
-                return ElementData;
+            if (element is T elementData)
+                return elementData;
         }
         throw new Exception("CMSEntity not found");
     }
     public static List<T> GetAll<T>() where T : CMSEntity
     {
-        List<T> list = new List<T>();
-        foreach (var Element in CMSEntities)
+        var list = new List<T>();
+        foreach (var element in _cmsEntities)
         {
-            if (Element is T ElementData)
-                list.Add(ElementData);
+            if (element is T elementData)
+                list.Add(elementData);
         }
         if (list.Count == 0)
             throw new Exception("CMSEntity not found");

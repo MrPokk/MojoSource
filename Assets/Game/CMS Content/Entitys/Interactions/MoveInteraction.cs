@@ -1,7 +1,9 @@
+using Engin.Utility;
 using Game.CMS_Content.Entitys.Components;
 using Game.CMS_Content.Entitys.Type.Interfaces;
 using Game.CMS_Content.Entitys.Type.Player;
 using Game.Script.Utility;
+using Game.Script.Utility.FromGame;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -38,11 +40,19 @@ namespace Game.CMS_Content.Entitys.Interactions
                 MoveEnemy(enemy.Key,enemy.Value);
                 yield return new WaitWhile(() => enemy.Key.IsWalking);
             }
+
+            foreach (var attack in InteractionCache<IEnterInAttack>.AllInteraction)
+            {
+                attack.UpdateAttack();
+            }
         }
 
         private void MoveEnemy(MoveComponent moveComponent, CMSEntity entity)
         {
             var nearestPlayer = TransformUtility.FindToNearest<PlayerModel>(entity.GetView());
+            if (nearestPlayer == null)
+                return;
+            
             var positionPlayer = nearestPlayer.GetViewPosition2D();
             GridUtility.TryGetPositionInGrid(positionPlayer, out var positionInGrid);
             moveComponent.MoveMethod?.Invoke(positionInGrid);

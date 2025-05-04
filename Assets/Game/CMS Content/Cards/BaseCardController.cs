@@ -1,31 +1,45 @@
 using Game.Engine_Component.CMS;
-using UnityEngine;
 
 namespace Game.CMS_Content.Cards
 {
-    public class BaseCardController : CMSManager
+    public sealed class BaseCardController : CMSManager
     {
-
         private HandCards HandCards => GameData<Main>.Boot.HandCards;
         public void GiveCardInHand<T>() where T : BaseCardModel, new()
         {
             if (HandCards.GetCountCard() < HandCards.MaxCard)
                 SpawnEntity<T>();
         }
+        
+        public void GiveCardInHand(BaseCardModel cardModel)
+        {
+            if (HandCards.GetCountCard() < HandCards.MaxCard)
+                SpawnEntity(cardModel);
+        }
 
-        public override void DestroyEntity(in GameObject ID)
+        public override void DestroyEntity(in ModelView ID)
         {
             HandCards.Remove(ID.GetComponent<BaseCardView>());
             base.DestroyEntity(in ID);
         }
-
+        
         protected override void SpawnEntity<T>()
         {
             Create<T>(out var id);
 
-            var Entity = GetEntityByID<BaseCardModel>(id);
+            var entityCard = GetEntityByID<BaseCardModel>(id);
 
-            Entity.GetComponent<ViewComponent>(out var viewComponent);
+            entityCard.GetComponent<ViewComponent>(out var viewComponent);
+            HandCards.Add(viewComponent.ViewModel as BaseCardView);
+        }
+        
+        private void SpawnEntity(BaseCardModel cardModel)
+        {
+            Create(cardModel,out var id);
+
+            var entityCard = GetEntityByID<BaseCardModel>(id);
+
+            entityCard.GetComponent<ViewComponent>(out var viewComponent);
             HandCards.Add(viewComponent.ViewModel as BaseCardView);
         }
     }

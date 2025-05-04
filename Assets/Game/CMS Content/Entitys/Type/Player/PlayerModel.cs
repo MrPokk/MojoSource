@@ -6,6 +6,7 @@ namespace Game.CMS_Content.Entitys.Type.Player
 {
     public class PlayerModel : BaseEntityModel
     {
+        
         public PlayerModel()
         {
             Define<RaycastingComponent>(out var raycastCommand);
@@ -15,8 +16,7 @@ namespace Game.CMS_Content.Entitys.Type.Player
             Components.Health.Init(20);
             Components.Move.Init(2, MoveTo);
         }
-
-
+        
         private void MoveTo(Vector2Int positionTo)
         {
             var isStartPosition = GridUtility.TryGetPositionInGrid(ViewObject.transform.position, out var startPosition);

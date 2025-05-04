@@ -4,10 +4,9 @@ using UnityEngine;
 
 namespace Game.CMS_Content.Entitys
 {
-    public class BaseEntityController : CMSManager
+    public sealed class BaseEntityController : CMSManager
     {
         private Vector2Int _positionCurrent;
-
         public void SpawnEntityInGrid<T>(Vector2Int positionGrid) where T : BaseEntityModel, new()
         {
             _positionCurrent = positionGrid;
@@ -27,8 +26,8 @@ namespace Game.CMS_Content.Entitys
             var cellSize = GameData<Main>.Boot.GridController.Grid.CellSize;
 
             entity.transform.localScale = new Vector3(cellSize, cellSize, 0);
-            
-            entity.transform.position = positionInGrid + (new Vector3(cellSize,cellSize)/2);
+
+            entity.transform.position = positionInGrid + (new Vector3(cellSize, cellSize) / 2);
         }
     }
 }

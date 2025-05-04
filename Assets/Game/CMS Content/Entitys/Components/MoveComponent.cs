@@ -21,7 +21,9 @@ namespace Game.CMS_Content.Entitys.Components
                 MaxCountTurn = maxCountTurn;
             else
                 throw new ArgumentException("ERROR: THE VALUES MUST BE GREATER THAN 0");
-            MoveMethod = moveMethod;
+            
+            MoveMethod ??= moveMethod;
+   
             CountTurnUpdate();
         }
         public void CountTurnUpdate()

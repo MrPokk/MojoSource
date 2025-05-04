@@ -12,7 +12,9 @@ namespace Game.CMS_Content.Entitys
 
             controller.SpawnEntityInGrid<PlayerModel>(new Vector2Int(1, 1));
             controller.SpawnEntityInGrid<FrogModel>(new Vector2Int(3, 3));
+            controller.SpawnEntityInGrid<FrogModel>(new Vector2Int(6, 3));
             controller.SpawnEntityInGrid<FrogModel>(new Vector2Int(5, 1));
+            controller.SpawnEntityInGrid<FrogModel>(new Vector2Int(0, 3));
         }
     }
 }

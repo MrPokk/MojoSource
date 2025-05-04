@@ -5,13 +5,21 @@ using UnityEngine;
 
 namespace Game.CMS_Content.Entitys.Interactions
 {
-    public class DeadInteraction : BaseInteraction, IEnterInNextTurn
+    public class DeadInteraction : BaseInteraction, IEnterInNextTurn, IEnterInDead, IEnterInAttack
     {
-
         public void UpdateTurn()
         {
+            UpdateDead();
+        }
+        public void UpdateAttack()
+        {
+            UpdateDead();
+        }
+
+        public void UpdateDead()
+        {
             var allEntity = CMS.Get<BaseEntityController>().GetEntities();
-            List<ModelView> dealEntity = new List<ModelView>();
+            var dealEntity = new List<ModelView>();
 
             foreach (var entity in allEntity.Values)
             {
@@ -21,8 +29,9 @@ namespace Game.CMS_Content.Entitys.Interactions
             }
             foreach (var entity in dealEntity)
             {
-                CMS.Get<BaseEntityController>().DestroyEntity(entity.gameObject);
+                CMS.Get<BaseEntityController>().DestroyEntity(entity);
             }
         }
+     
     }
 }

@@ -1,92 +1,89 @@
 using Engin.Utility;
 using Game.Engine_Component.CMS;
-using JetBrains.Annotations;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
-namespace Game.Script.Utility
+namespace Game.Script.Utility.FromGame
 {
-    public sealed class TransformUtility
+    public static class TransformUtility
     {
-
         public static CMSEntity FindToNearest<TEntity, TComponent>(ModelView fromModel) where TEntity : CMSEntity where TComponent : class, IComponent
         {
-            CMSEntity NearestEntity = null;
+            CMSEntity nearestEntity = null;
 
-            float NearestDistance = float.MaxValue;
-            Vector3 FromModelPosition = fromModel.transform.position;
-            
-            foreach (var CMSManager in CMS.GetAll<CMSManager>())
+            var nearestDistance = float.MaxValue;
+            var fromModelPosition = fromModel.transform.position;
+
+            foreach (var cmsManager in CMS.GetAll<CMSManager>())
             {
-
-                foreach (var Entity in CMSManager.GetEntities())
+                foreach (var entity in cmsManager.GetEntities())
                 {
-                    var EntityPosition = Entity.Key.transform.position;
-                    var DistanceToModel = Vector2.Distance(FromModelPosition, EntityPosition);
+                    var entityPosition = entity.Key.transform.position;
+                    var distanceToModel = Vector2.Distance(fromModelPosition, entityPosition);
 
-                    Entity.Value.GetComponent(out TComponent component);
-                    if (!(DistanceToModel < NearestDistance) || component == null || component.GetType() != typeof(TComponent))
+                    entity.Value.GetComponent(out TComponent component);
+                    if (!(distanceToModel < nearestDistance) || component == null || component.GetType() != typeof(TComponent))
                         continue;
-                    
-                    NearestDistance = DistanceToModel;
-                    NearestEntity = Entity.Value;
+
+                    nearestDistance = distanceToModel;
+                    nearestEntity = entity.Value;
                 }
             }
-            return NearestEntity;
+            return nearestEntity;
         }
-        
+
         public static CMSEntity FindToNearest<T>(ModelView fromModel) where T : CMSEntity
         {
-            CMSEntity NearestEntity = null;
+            CMSEntity nearestEntity = null;
 
-            float NearestDistance = float.MaxValue;
-            Vector3 FromModelPosition = fromModel.transform.position;
-            
-            foreach (var CMSManager in CMS.GetAll<CMSManager>())
+            if (fromModel == null)
+                return null;
+
+            var nearestDistance = float.MaxValue;
+            var fromModelPosition = fromModel.transform.position;
+
+            foreach (var cmsManager in CMS.GetAll<CMSManager>())
             {
 
-                foreach (var Entity in CMSManager.GetEntities())
+                foreach (var entity in cmsManager.GetEntities())
                 {
-                    var EntityPosition = Entity.Key.transform.position;
-                    var DistanceToModel = Vector2.Distance(FromModelPosition, EntityPosition);
-                    
-                    if (!(DistanceToModel < NearestDistance) || Entity.Value.GetType() != typeof(T))
+                    var entityPosition = entity.Key.transform.position;
+                    var distanceToModel = Vector2.Distance(fromModelPosition, entityPosition);
+
+                    if (!(distanceToModel < nearestDistance) || entity.Value.GetType() != typeof(T))
                         continue;
-                    
-                    NearestDistance = DistanceToModel;
-                    NearestEntity = Entity.Value;
+
+                    nearestDistance = distanceToModel;
+                    nearestEntity = entity.Value;
                 }
             }
-            return NearestEntity;
+            return nearestEntity;
         }
 
         public static CMSEntity FindToNearest(ModelView fromModel)
         {
-            CMSEntity NearestEntity = null;
+            CMSEntity nearestEntity = null;
 
-            float NearestDistance = float.MaxValue;
-            Vector3 FromModelPosition = fromModel.transform.position;
+            var nearestDistance = float.MaxValue;
+            var fromModelPosition = fromModel.transform.position;
 
-            foreach (var CMSManager in CMS.GetAll<CMSManager>())
+            foreach (var cmsManager in CMS.GetAll<CMSManager>())
             {
 
-                foreach (var Entity in CMSManager.GetEntities())
+                foreach (var entity in cmsManager.GetEntities())
                 {
-                    var EntityPosition = Entity.Key.transform.position;
-                    var DistanceToModel = Vector2.Distance(FromModelPosition, EntityPosition);
+                    var entityPosition = entity.Key.transform.position;
+                    var distanceToModel = Vector2.Distance(fromModelPosition, entityPosition);
 
-                    if (!(DistanceToModel < NearestDistance))
+                    if (!(distanceToModel < nearestDistance))
                         continue;
 
-                    NearestDistance = DistanceToModel;
-                    NearestEntity = Entity.Value;
+                    nearestDistance = distanceToModel;
+                    nearestEntity = entity.Value;
 
                 }
             }
 
-            return NearestEntity;
+            return nearestEntity;
         }
 
     }

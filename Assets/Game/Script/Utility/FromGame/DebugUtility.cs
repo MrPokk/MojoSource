@@ -1,7 +1,6 @@
 using Game.CMS_Content.Cards;
 using Game.CMS_Content.Cards.Type;
 using System;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Object = UnityEngine.Object;
@@ -38,7 +37,11 @@ public class DebugInteraction : BaseInteraction, IEnterInUpdate
     public void Update(float TimeDelta)
     {
         if (Input.GetKeyDown(KeyCode.K))
-            CMS.Get<BaseCardController>().GiveCardInHand<ArsonCard>();
+            CMS.Get<BaseCardController>().GiveCardInHand<DamageCard>();
+        if (Input.GetKeyDown(KeyCode.J))
+            CMS.Get<BaseCardController>().GiveCardInHand<MultiplierCard>();
+        if (Input.GetKeyDown(KeyCode.P))
+            CMS.Get<BaseCardController>().GiveCardInHand<MirrorCard>();
         if (Input.GetKeyDown(KeyCode.R))
             LoadSceneRoot();
     }

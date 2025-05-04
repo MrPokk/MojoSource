@@ -54,6 +54,8 @@ public class Main : MonoBehaviour, IMain
     private void NextStep()
     {
         _interact.FindAll<IEnterInNextTurn>();
+        _interact.FindAll<IEnterInAttack>();
+
         
         _turnInteraction = new TurnInteraction();
         GameData<Main>.Turn = _turnInteraction;

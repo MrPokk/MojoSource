@@ -37,3 +37,16 @@ interface IEnterInNextTurn
     void UpdateTurn();
 }
 
+interface IEnterInAttack
+{
+    void UpdateAttack();
+}
+
+interface IEnterInDead
+{
+    void UpdateDead();
+}
+
+
+
+

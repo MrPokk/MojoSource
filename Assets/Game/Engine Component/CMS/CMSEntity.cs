@@ -8,7 +8,7 @@ using UnityEngine;
 
 public abstract class CMSEntity
 {
-    private HashSet<IComponent> _components = new HashSet<IComponent>();
+    private readonly HashSet<IComponent> _components = new HashSet<IComponent>();
 
     public Type ID { get => GetType(); }
 
