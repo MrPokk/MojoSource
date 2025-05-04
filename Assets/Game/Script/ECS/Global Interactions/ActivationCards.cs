@@ -1,13 +1,14 @@
+using Engin.Utility;
 using Game.CMS_Content.Cards;
 using Game.CMS_Content.Entitys;
 using Game.CMS_Content.Entitys.Components;
-using System;
-using System.Collections;
+using UnityEngine;
 
 namespace Game.Script.ECS.Global_Interactions
 {
     public class ActivationCards : BaseInteraction, IEnterInNextTurn
     {
+        public override Priority PriorityInteraction { get => Priority.High; }
         public void UpdateTurn()
         {
             var allEntity = CMS.Get<BaseEntityController>().GetEntities();
@@ -21,7 +22,6 @@ namespace Game.Script.ECS.Global_Interactions
                 }
                 cardInsideComponent.RemoveAllCard();
             }
-     
         }
     }
 }

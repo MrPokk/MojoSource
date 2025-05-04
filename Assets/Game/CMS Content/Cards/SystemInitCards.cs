@@ -8,9 +8,9 @@ namespace Game.CMS_Content.Cards
         {
             var controller = CMS.Get<BaseCardController>();
 
-            controller.GiveCardInHand<ArsonCard>();
-            controller.GiveCardInHand<ArsonCard>();
-            controller.GiveCardInHand<ArsonCard>();
+            controller.GiveCardInHand<DamageCard>();
+            controller.GiveCardInHand<DamageCard>();
+            controller.GiveCardInHand<DamageCard>();
         }
     }
 }

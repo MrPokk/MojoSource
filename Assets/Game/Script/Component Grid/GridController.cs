@@ -18,8 +18,10 @@ public class GridController
                 Vector2Int gridPosition = new Vector2Int(x, y);
                 
                 Grid.SetValue(gridPosition,new GridNode(gridPosition));
+                _gridView.Init(ref x, ref y, ref cellSize);
             }
         }
+        
     }
 
 }

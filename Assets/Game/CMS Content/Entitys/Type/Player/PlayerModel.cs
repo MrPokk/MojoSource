@@ -1,4 +1,3 @@
-using Game.CMS_Content.Entity.Type;
 using Game.Script.Component_Grid.Component_Pathfind;
 using Game.Script.ECS.Global_Components;
 using UnityEngine;
@@ -12,10 +11,9 @@ namespace Game.CMS_Content.Entitys.Type.Player
             Define<RaycastingComponent>(out var raycastCommand);
 
             Components.View.LoadView<PlayerView>(PathResources.ENTITY);
-
+            
             Components.Health.Init(20);
             Components.Move.Init(2, MoveTo);
-
         }
 
 

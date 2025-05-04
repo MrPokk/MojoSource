@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 6c0db7561ec1ff24799f3f3cbf64dc1b
+guid: 6a892748ffc5c0b41801c85cad0bd4fb
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -35,7 +35,7 @@ ScriptedImporter:
     spriteMeshType: 1
     alignment: 0
     spritePivot: {x: 0.5, y: 0.5}
-    spritePixelsToUnits: 32
+    spritePixelsToUnits: 16
     spriteBorder: {x: 0, y: 0, z: 0, w: 0}
     spriteGenerateFallbackPhysicsShape: 0
     generateCubemap: 6
@@ -97,7 +97,7 @@ ScriptedImporter:
     addSortingGroup: 1
     addShadowCasters: 0
   importFileNodeState: 1
-  platformSettingsDirtyTick: 638818919521823668
+  platformSettingsDirtyTick: 638818895502060387
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -122,9 +122,9 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: Entity
+  - name: Node
     originalName: 
-    pivot: {x: 0.5, y: 0}
+    pivot: {x: 31.437502, y: -38.625}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -132,9 +132,9 @@ ScriptedImporter:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 960
-      height: 540
-    spriteID: b1ad1d7a3eec9224dab1c408bcd5f265
+      width: 16
+      height: 16
+    spriteID: 9f786a627651a074998d677e73768bf7
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -144,7 +144,7 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 4, y: 4}
   spriteSheetImportData:
-  - name: Entity_0
+  - name: Node_0
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -152,11 +152,11 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
-      x: 35
-      y: 276
-      width: 32
-      height: 32
-    spriteID: ade148df7e165de47923159e2292e834
+      x: 4
+      y: 4
+      width: 16
+      height: 16
+    spriteID: 33e4084daf4167a4ab825c3f7c5ab4b8
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -167,21 +167,21 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   asepriteLayers:
   - layerIndex: 0
-    guid: -1850775877
-    name: Entity
+    guid: -1184998990
+    name: Node
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: Entity
+    - name: Node
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
-        x: 33
-        y: 220
-        width: 431
-        height: 316
-      spriteId: b1ad1d7a3eec9224dab1c408bcd5f265
+        x: 65
+        y: 619
+        width: 14
+        height: 14
+      spriteId: 9f786a627651a074998d677e73768bf7
     linkedCells: []
     parentIndex: -1
   platformSettings:
@@ -224,4 +224,4 @@ ScriptedImporter:
   generatePhysicsShape: 0
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 960, y: 540}
+  canvasSize: {x: 1134, y: 666}

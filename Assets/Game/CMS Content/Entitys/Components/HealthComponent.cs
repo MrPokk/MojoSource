@@ -1,10 +1,14 @@
 using Engin.Utility;
+using System;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Game.CMS_Content.Entitys.Components
 {
     public class HealthComponent : IComponent
     {
+        public event Action<int> OnChange;
         public int MaxHealth { get; private set; }
         public int HealthCurrent { get; private set; }
         public void Init(int maxHealth)
@@ -18,8 +22,9 @@ namespace Game.CMS_Content.Entitys.Components
             var deltaHealth = (HealthCurrent - countHealth);
             if (deltaHealth < 0)
                 HealthCurrent = 0;
-            else
-                HealthCurrent = (int)deltaHealth;
+
+            HealthCurrent = (int)deltaHealth;
+            OnChange?.Invoke(HealthCurrent);
         }
 
         public void Increase(uint countHealth)
@@ -27,8 +32,9 @@ namespace Game.CMS_Content.Entitys.Components
             var deltaHealth = (HealthCurrent + countHealth);
             if (deltaHealth > MaxHealth)
                 HealthCurrent = MaxHealth;
-            else
-                HealthCurrent = (int)deltaHealth;
+            
+            HealthCurrent = (int)deltaHealth;
+            OnChange?.Invoke(HealthCurrent);
         }
 
     }

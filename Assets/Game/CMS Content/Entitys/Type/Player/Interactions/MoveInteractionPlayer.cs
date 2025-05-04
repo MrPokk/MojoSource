@@ -1,4 +1,3 @@
-using Game.CMS_Content.Entity.Type;
 using Game.CMS_Content.Entitys.Components;
 using Game.Script.Global_Interactions;
 using System.Collections.Generic;

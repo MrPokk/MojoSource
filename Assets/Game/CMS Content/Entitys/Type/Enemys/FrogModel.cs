@@ -1,4 +1,3 @@
-using Game.CMS_Content.Entity.Type.Enemys;
 using Game.CMS_Content.Entitys.Type.Interfaces;
 using Game.Script.Component_Grid.Component_Pathfind;
 using UnityEngine;

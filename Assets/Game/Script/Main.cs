@@ -9,6 +9,8 @@ public class Main : MonoBehaviour, IMain
     private Interaction _interact;
     private TurnInteraction _turnInteraction;
     
+    
+    public GridView GridViewToArt;
     public GridView GridView;
     public HandCards HandCards;
     public UIRoot UIRoot;

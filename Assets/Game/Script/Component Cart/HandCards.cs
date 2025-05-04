@@ -1,24 +1,29 @@
 using Game.CMS_Content.Cards;
 using System.Collections.Generic;
 using UnityEngine;
+
 public class HandCards : MonoBehaviour
 {
     [SerializeField]
     private List<BaseCardView> _cards = new List<BaseCardView>();
 
-    private float _spacing;
+    public readonly int MaxCard = 5;
 
     [SerializeField]
-    private bool _axisSwap;
+    private bool _rotateOrigin;
 
-    [Range(0.1f, 2), SerializeField]
-    private float _maxSpacing;
-    [Range(1, 20), SerializeField]
-    private float _maxSize;
+    [Range(20, 50)]
+    [SerializeField]
+    private float _parabolaParameter;
 
     private void Update()
     {
         SetPoseTile();
+    }
+
+    public int GetCountCard()
+    {
+        return _cards.Count;
     }
 
     public void Add(BaseCardView card)
@@ -35,20 +40,37 @@ public class HandCards : MonoBehaviour
 
     private void SetPoseTile()
     {
-        float size = _maxSpacing * _cards.Count;
+        var cardCount = _cards.Count;
+        if (cardCount == 0) return;
 
-        if (size < _maxSize)
-            _spacing = _maxSpacing;
-        else
-            _spacing = _maxSize / size * _maxSize;
+        var centerOffset = (cardCount - 1) / 2.0f;
 
-        for (int i = 0; i < _cards.Count; i++)
+        for (int i = 0; i < cardCount; i++)
         {
-            var offset = new Vector3(0, (i - _cards.Count / 2.2f) * _spacing, 0);
-            if (_axisSwap)
-                offset = new Vector3(offset.y, offset.x, offset.z);
+            var x = i - centerOffset;
+            var y = -(x * x) / _parabolaParameter;
 
-            _cards[i].gameObject.transform.position = transform.position + offset;
+            var newPosition = ConvertOrigin(ref i, ref centerOffset);
+            _cards[i].transform.position = transform.position + newPosition;
+        }
+    }
+
+    
+    private Vector3 ConvertOrigin(ref int elementIndex, ref float centerOffset) {
+        
+        if (_rotateOrigin)
+        {
+            var x = elementIndex - centerOffset;
+            var y = -(x * x) / _parabolaParameter;
+            return new Vector3(y, x, -0.01f * elementIndex);
+
+        }
+        else
+        {
+            var x = elementIndex - centerOffset;
+            var y = -(x * x) / _parabolaParameter;
+            return new Vector3(x, y, -0.01f * elementIndex);
+
         }
     }
 }

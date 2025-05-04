@@ -10,9 +10,7 @@ namespace Game.Script.Component_Grid.Component_Pathfind
     {
         private HashSet<Vector2Int> _open;
         private HashSet<Vector2Int> _close;
-
-        private Dictionary<Vector2Int, Vector2Int> _closed;
-
+        
         private GridNode _current;
 
         private GridNode _endNode;
@@ -20,14 +18,14 @@ namespace Game.Script.Component_Grid.Component_Pathfind
 
         private GridNode[,] _grid;
 
-        private readonly static Vector2Int[] _neighborsOffset = new[]
+        private readonly static Vector2Int[] _neighborsOffset = 
         {
             Vector2Int.right,
             Vector2Int.left,
 
             Vector2Int.up,
             Vector2Int.down,
-
+            
             new Vector2Int(-1, -1),
             new Vector2Int(-1, 1),
             new Vector2Int(1, -1),
@@ -72,22 +70,22 @@ namespace Game.Script.Component_Grid.Component_Pathfind
                     return GetPath(_endNode.Index);
                 }
 
-                var Neighbors = GetIndexNeighbors(_current.Index);
-                foreach (var Neighbor in Neighbors)
+                var neighbors = GetIndexNeighbors(_current.Index);
+                foreach (var neighbor in neighbors)
                 {
 
-                    GridNode NeighborNode = _grid[Neighbor.x, Neighbor.y];
+                    GridNode neighborNode = _grid[neighbor.x, neighbor.y];
 
-                    int TentativeGCost = _current.GCost + CalculateHCost(_current.Index, Neighbor);
-                    if (TentativeGCost < NeighborNode.GCost)
+                    int tentativeGCost = _current.GCost + CalculateHCost(_current.Index, neighbor);
+                    if (tentativeGCost < neighborNode.GCost)
                     {
-                        NeighborNode.IndexParent = _current.Index;
-                        NeighborNode.GCost = TentativeGCost;
-                        NeighborNode.HCost = CalculateHCost(NeighborNode.Index, _endNode.Index);
+                        neighborNode.IndexParent = _current.Index;
+                        neighborNode.GCost = tentativeGCost;
+                        neighborNode.HCost = CalculateHCost(neighborNode.Index, _endNode.Index);
 
-                        _grid[NeighborNode.Index.x, NeighborNode.Index.y] = NeighborNode;
+                        _grid[neighborNode.Index.x, neighborNode.Index.y] = neighborNode;
 
-                        _open.Add(NeighborNode.Index);
+                        _open.Add(neighborNode.Index);
                     }
                 }
             }
@@ -102,36 +100,36 @@ namespace Game.Script.Component_Grid.Component_Pathfind
 
         private List<Vector2Int> GetPath(Vector2Int endNodeIndex)
         {
-            List<Vector2Int> Path = new List<Vector2Int>();
+            var path = new List<Vector2Int>();
 
-            GridNode CurrentNode = GridUtility.GetNodeByIndex(endNodeIndex, _grid);
-            Path.Add(CurrentNode.Index);
+            var currentNode = GridUtility.GetNodeByIndex(endNodeIndex, _grid);
+            path.Add(currentNode.Index);
 
-            while (CurrentNode.IndexParent != Vector2Int.one * -1)
+            while (currentNode.IndexParent != Vector2Int.one * -1)
             {
-                GridNode CameFromNode = GridUtility.GetNodeByIndex(CurrentNode.IndexParent, _grid);
-                Path.Add(CameFromNode.Index);
-                CurrentNode = CameFromNode;
+                var cameFromNode = GridUtility.GetNodeByIndex(currentNode.IndexParent, _grid);
+                path.Add(cameFromNode.Index);
+                currentNode = cameFromNode;
             }
 
-            Path.Reverse();
+            path.Reverse();
 
-            return Path;
+            return path;
         }
 
-        public List<Vector2Int> GetIndexNeighbors(Vector2Int currentNodeIndex)
+        private List<Vector2Int> GetIndexNeighbors(Vector2Int currentNodeIndex)
         {
-            var NeighborAll = new List<Vector2Int>();
+            var neighborAll = new List<Vector2Int>();
 
-            foreach (Vector2Int NeighborsOffset in _neighborsOffset)
+            foreach (var neighborsOffset in _neighborsOffset)
             {
-                var NeighborIndex = currentNodeIndex + NeighborsOffset;
+                var neighborIndex = currentNodeIndex + neighborsOffset;
 
-                if (GridUtility.IsWithinGrid(NeighborIndex, _grid) && IsNodeWalkable(NeighborIndex, _grid))
-                    NeighborAll.Add(NeighborIndex);
+                if (GridUtility.IsWithinGrid(neighborIndex, _grid) && IsNodeWalkable(neighborIndex, _grid))
+                    neighborAll.Add(neighborIndex);
             }
 
-            return NeighborAll;
+            return neighborAll;
         }
 
         private bool IsNodeWalkable(Vector2Int indexNode, GridNode[,] grid)
@@ -150,16 +148,16 @@ namespace Game.Script.Component_Grid.Component_Pathfind
 
         private GridNode GetLowerFCost(HashSet<Vector2Int> nodeArray)
         {
-            var IndexLowerNode = GridUtility.GetNodeByIndex(nodeArray.First(), _grid);
-            foreach (var NodeIndex in nodeArray)
+            var indexLowerNode = GridUtility.GetNodeByIndex(nodeArray.First(), _grid);
+            foreach (var nodeIndex in nodeArray)
             {
-                var NodeElement = GridUtility.GetNodeByIndex(NodeIndex, _grid);
+                var nodeElement = GridUtility.GetNodeByIndex(nodeIndex, _grid);
 
-                if (NodeElement.FCost < IndexLowerNode.FCost)
-                    IndexLowerNode = NodeElement;
+                if (nodeElement.FCost < indexLowerNode.FCost)
+                    indexLowerNode = nodeElement;
             }
 
-            return IndexLowerNode;
+            return indexLowerNode;
         }
 
     }

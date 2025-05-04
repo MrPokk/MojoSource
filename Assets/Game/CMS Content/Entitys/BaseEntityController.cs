@@ -1,14 +1,11 @@
-using Game.CMS_Content.Entity;
 using Game.Engine_Component.CMS;
 using Game.Script.Component_Grid.Component_Pathfind;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Game.CMS_Content.Entitys
 {
     public class BaseEntityController : CMSManager
     {
-
         private Vector2Int _positionCurrent;
 
         public void SpawnEntityInGrid<T>(Vector2Int positionGrid) where T : BaseEntityModel, new()
@@ -27,9 +24,11 @@ namespace Game.CMS_Content.Entitys
             var inGrid = GridUtility.TryGetPositionInGrid(_positionCurrent, out Vector3 positionInGrid);
             if (!inGrid)
                 return;
+            var cellSize = GameData<Main>.Boot.GridController.Grid.CellSize;
 
-            positionInGrid += (entity.transform.localScale / 2);
-            entity.transform.position = positionInGrid;
+            entity.transform.localScale = new Vector3(cellSize, cellSize, 0);
+            
+            entity.transform.position = positionInGrid + (new Vector3(cellSize,cellSize)/2);
         }
     }
 }
