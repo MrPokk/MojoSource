@@ -4,14 +4,14 @@ namespace Game.Script.Component_Grid.Component_Pathfind
 {
     public partial class AStar
     {
-        private static bool ValidatePath(Vector2Int start, Vector2Int end)
+        private static bool ValidatePath(Vector2Int start, Vector2Int end, GridNode[,] gridNodes)
         {
-            if (GridUtility.GridModel == null || start == end)
+            if (gridNodes == null || start == end)
                 return false;
 
-            if (!GridUtility.IsWithinGrid(start, GridUtility.GridModel.Array) || !GridUtility.IsWithinGrid(end, GridUtility.GridModel.Array))
+            if (!IsWithinGrid(start, gridNodes) || !IsWithinGrid(end, gridNodes))
                 return false;
-            
+
             return true;
         }
     }

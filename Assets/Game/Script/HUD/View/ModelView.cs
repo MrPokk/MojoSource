@@ -1,7 +1,5 @@
-using Game.CMS_Content.Cards;
 using Game.Engine_Component.CMS;
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class ModelView : MonoBehaviour

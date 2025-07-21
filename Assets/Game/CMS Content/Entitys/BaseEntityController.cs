@@ -7,23 +7,23 @@ namespace Game.CMS_Content.Entitys
     public sealed class BaseEntityController : CMSManager
     {
         private Vector2Int _positionCurrent;
+
         public void SpawnEntityInGrid<T>(Vector2Int positionGrid) where T : BaseEntityModel, new()
         {
             _positionCurrent = positionGrid;
-
-            GridUtility.SetTypeInGrid(positionGrid, GridNode.TypeNode.Wall);
-
             SpawnEntity<T>();
         }
 
         protected override void SpawnEntity<T>()
         {
             Create<T>(out var entity);
+            var gridController = GameData<Main>.Boot.GetGridController(CMS.Get<T>());
+            gridController.SetTypeInGrid(_positionCurrent, GridNode.TypeNode.Wall);
 
-            var inGrid = GridUtility.TryGetPositionInGrid(_positionCurrent, out Vector3 positionInGrid);
+            var inGrid = gridController.TryGetPositionInGrid(_positionCurrent, out Vector3 positionInGrid);
             if (!inGrid)
                 return;
-            var cellSize = GameData<Main>.Boot.GridController.Grid.CellSize;
+            var cellSize = gridController.GetCellSize();
 
             entity.transform.localScale = new Vector3(cellSize, cellSize, 0);
 

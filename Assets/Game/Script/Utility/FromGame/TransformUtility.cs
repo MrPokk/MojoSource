@@ -1,21 +1,27 @@
 using Engin.Utility;
 using Game.Engine_Component.CMS;
+using System.Linq;
 using UnityEngine;
 
 namespace Game.Script.Utility.FromGame
 {
     public static class TransformUtility
     {
-        public static CMSEntity FindToNearest<TEntity, TComponent>(ModelView fromModel) where TEntity : CMSEntity where TComponent : class, IComponent
+        public static CMSEntity FindToNearestComponent<TComponent>(ModelView fromModel) where TComponent : class, IComponent
         {
             CMSEntity nearestEntity = null;
 
             var nearestDistance = float.MaxValue;
             var fromModelPosition = fromModel.transform.position;
+            
+            var cachedManagers = CMS.GetAll<CMSManager>().ToList();
 
-            foreach (var cmsManager in CMS.GetAll<CMSManager>())
+
+            foreach (var cmsManager in cachedManagers)
             {
-                foreach (var entity in cmsManager.GetEntities())
+                var cachedEntities = cmsManager.GetEntities().ToList();
+
+                foreach (var entity in cachedEntities)
                 {
                     var entityPosition = entity.Key.transform.position;
                     var distanceToModel = Vector2.Distance(fromModelPosition, entityPosition);
@@ -31,31 +37,37 @@ namespace Game.Script.Utility.FromGame
             return nearestEntity;
         }
 
-        public static CMSEntity FindToNearest<T>(ModelView fromModel) where T : CMSEntity
+        public static CMSEntity FindToNearest<TEntity>(ModelView fromModel) where TEntity : CMSEntity
         {
-            CMSEntity nearestEntity = null;
-
-            if (fromModel == null)
+            if (!fromModel)
                 return null;
 
             var nearestDistance = float.MaxValue;
             var fromModelPosition = fromModel.transform.position;
+            CMSEntity nearestEntity = null;
 
-            foreach (var cmsManager in CMS.GetAll<CMSManager>())
+            var cachedManagers = CMS.GetAll<CMSManager>().ToList();
+
+            foreach (var cmsManager in cachedManagers)
             {
+                var cachedEntities = cmsManager.GetEntities().ToList();
 
-                foreach (var entity in cmsManager.GetEntities())
+                foreach (var entity in cachedEntities)
                 {
+                    if (entity.Value is not TEntity)
+                        continue;
+
                     var entityPosition = entity.Key.transform.position;
                     var distanceToModel = Vector2.Distance(fromModelPosition, entityPosition);
 
-                    if (!(distanceToModel < nearestDistance) || entity.Value.GetType() != typeof(T))
-                        continue;
-
-                    nearestDistance = distanceToModel;
-                    nearestEntity = entity.Value;
+                    if (distanceToModel < nearestDistance)
+                    {
+                        nearestDistance = distanceToModel;
+                        nearestEntity = entity.Value;
+                    }
                 }
             }
+
             return nearestEntity;
         }
 
@@ -66,10 +78,15 @@ namespace Game.Script.Utility.FromGame
             var nearestDistance = float.MaxValue;
             var fromModelPosition = fromModel.transform.position;
 
-            foreach (var cmsManager in CMS.GetAll<CMSManager>())
+            var cachedManagers = CMS.GetAll<CMSManager>().ToList();
+
+            
+            foreach (var cmsManager in cachedManagers)
             {
 
-                foreach (var entity in cmsManager.GetEntities())
+                var cachedEntities = cmsManager.GetEntities().ToList();
+                
+                foreach (var entity in cachedEntities)
                 {
                     var entityPosition = entity.Key.transform.position;
                     var distanceToModel = Vector2.Distance(fromModelPosition, entityPosition);

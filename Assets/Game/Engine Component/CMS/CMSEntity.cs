@@ -14,7 +14,7 @@ public abstract class CMSEntity
 
     public void GetComponent<T>(out T refComponent) where T : class, IComponent
     {
-        refComponent = _components.FirstOrDefault((c) => c is T) as T;
+        refComponent = _components.FirstOrDefault(c => c is T) as T;
     }
 
     protected void RemoveComponent<T>() where T : class, IComponent
@@ -37,15 +37,16 @@ public abstract class CMSEntity
     {
         return new(GetView().transform.position.x, GetView().transform.position.y);
     }
+    
+    
+    public Vector3 GetViewPosition3D()
+    {
+        return new(GetView().transform.position.x, GetView().transform.position.y,0);
+    }
+    
     protected void Define<T>(out T component) where T : IComponent, new()
     {
         component = new T();
-        RegisterComponents(component);
+        _components.Add(component);
     }
-    private void RegisterComponents(params IComponent[] refComponent)
-    {
-        _components.AddRange(refComponent);
-    }
-
-
 }

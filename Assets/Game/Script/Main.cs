@@ -1,21 +1,33 @@
 using Engin.Utility;
 using Game.CMS_Content;
+using Game.CMS_Content.Entitys;
+using Game.CMS_Content.Entitys.Type.Interfaces;
 using Game.Script.ECS.Global_Interactions;
 using Game.Script.Utility.FromGame;
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 public class Main : MonoBehaviour, IMain
 {
     private Interaction _interact;
     private TurnInteraction _turnInteraction;
-    
-    
-    public GridView GridViewToArt;
-    public GridView GridView;
-    public HandCards HandCards;
-    public UIRoot UIRoot;
-    public GridController GridController { get; private set; }
+
+    [SerializeField]
+    private GridView _gridPlayer;
+    [SerializeField]
+    private GridView _gridEnemy;
+    [SerializeField]
+    private UIRoot _uiRoot;
+
+    [field: SerializeField]
+    public HandCards HandCards { get; private set; }
+
+    private GridController _gridController;
+  //  private GridController _gridControllerEnemy;
+
     public Camera MainCamera { get; private set; }
+    
+
 
     public void StartGame()
     {
@@ -25,7 +37,9 @@ public class Main : MonoBehaviour, IMain
         GameData<Main>.Boot = this;
 
 
-        GridController = new GridController(new(12, 5), 0.73f, GridView);
+        _gridController = new GridController(new(12, 5), 0.73f, _gridPlayer);
+      //  _gridControllerEnemy = new GridController(new(5, 5), 0.73f, _gridEnemy);
+
 
         MainCamera = Camera.main;
 
@@ -43,7 +57,7 @@ public class Main : MonoBehaviour, IMain
         {
             element.Start();
         }
-        
+
         _interact.FindAll<IEnterInUpdate>();
         _interact.FindAll<IExitInGame>();
         _interact.FindAll<IEnterInPhysicUpdate>();
@@ -56,18 +70,31 @@ public class Main : MonoBehaviour, IMain
         _interact.FindAll<IEnterInNextTurn>();
         _interact.FindAll<IEnterInAttack>();
 
-        
+
         _turnInteraction = new TurnInteraction();
         GameData<Main>.Turn = _turnInteraction;
     }
 
-    
+
     public void InstantiateCMSEntity(ViewComponent SetView, Vector3 Position = default, Quaternion Rotation = default)
     {
         if (!SetView.ViewModel)
             throw new NullReferenceException("The Prefab is null");
 
         SetView.ViewModel = Instantiate(SetView.ViewModel, Position, Rotation);
+    }
+
+    public GridController GetGridController(CMSEntity cmsEntity)
+    {
+        if (cmsEntity is IPlayer)
+        {
+            return _gridController;
+        }
+        if (cmsEntity is IEnemy)
+        {
+            return _gridController;
+        }
+        throw new ArgumentException("ERROR: Grid not found");
     }
 
 
@@ -94,8 +121,8 @@ public class Main : MonoBehaviour, IMain
         {
             Element.Stop();
         }
-    } 
-    
+    }
+
     private void Awake()
     {
         StartGame();
@@ -107,7 +134,7 @@ public class Main : MonoBehaviour, IMain
     private void FixedUpdate()
     {
         PhysicUpdateGame(Time.deltaTime);
-    } 
+    }
 
     private void OnDestroy()
     {

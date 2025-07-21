@@ -7,7 +7,7 @@ public class HandCards : MonoBehaviour
     [SerializeField]
     private List<BaseCardView> _cards = new List<BaseCardView>();
 
-    public readonly int MaxCard = 5;
+    public readonly int MaxCard = 4;
 
     [SerializeField]
     private bool _rotateOrigin;
@@ -70,7 +70,6 @@ public class HandCards : MonoBehaviour
             var x = elementIndex - centerOffset;
             var y = -(x * x) / _parabolaParameter;
             return new Vector3(x, y, -0.01f * elementIndex);
-
         }
     }
 }

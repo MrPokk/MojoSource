@@ -5,7 +5,7 @@ using Object = UnityEngine.Object;
 
 namespace Game.Engine_Component.CMS
 {
-    public abstract class CMSManager : CMSEntity
+    public abstract class CMSManager : CMSEntity 
     {
         private readonly Dictionary<ModelView, CMSEntity> _loadedEntity = new Dictionary<ModelView, CMSEntity>();
         protected abstract void SpawnEntity<T>() where T : CMSEntity, new();

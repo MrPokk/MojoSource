@@ -4,6 +4,7 @@ using Game.Script.Settings;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Game.CMS_Content.Entitys.Components
@@ -11,52 +12,67 @@ namespace Game.CMS_Content.Entitys.Components
     public class MoveComponent : IComponent
     {
         public bool IsWalking { get; private set; }
-        public int MaxCountTurn { get; private set; }
-        public int CountTurn { get; private set; }
+        public Vector2Int[] NeighborsOffset { get; private set; }
+        
+        private int _maxCountStep;
+        private int _countStep;
         public Action<Vector2Int> MoveMethod { get; private set; }
+       
 
-        public void Init(int maxCountTurn, Action<Vector2Int> moveMethod)
+        public GridController GridController { get; private set; }
+
+
+        public void Init(int maxCountStep, in Vector2Int[] neighborsAll, Action<Vector2Int> moveMethod, GridController gridController)
         {
-            if (maxCountTurn > 0)
-                MaxCountTurn = maxCountTurn;
+            if (maxCountStep > 0)
+                _maxCountStep = maxCountStep;
             else
                 throw new ArgumentException("ERROR: THE VALUES MUST BE GREATER THAN 0");
-            
+
             MoveMethod ??= moveMethod;
-   
+            GridController ??= gridController;
+            NeighborsOffset = neighborsAll;
+
             CountTurnUpdate();
         }
         public void CountTurnUpdate()
         {
-            CountTurn = MaxCountTurn;
+            _countStep = _maxCountStep;
         }
-        public void MakeByStep(List<Vector2Int> path, Vector2Int startPosition, Vector2Int endPosition, GameObject modelViewFromMove)
+        public void MakeByStep(List<Vector2Int> path, ModelView modelViewFromMove)
         {
-            GridUtility.SetTypeInGrid(startPosition, GridNode.TypeNode.SimplyNode);
-
-            if (!IsWalking && path != null && CountTurn > 0)
-            {
-                IsWalking = true;
-                GameData<Main>.Coroutine.Run(MoveByStepsWithDelay(path, modelViewFromMove));
-            }
-            else
+            if (!modelViewFromMove || path == null || path.First() == path.Last())
                 return;
 
-            GridUtility.SetTypeInGrid(endPosition, GridNode.TypeNode.Wall);
+            if (IsWalking || _countStep <= 0)
+                return;
+
+            IsWalking = true;
+            GameData<Main>.Coroutine.Run(MoveByStepsWithDelay(path, modelViewFromMove));
         }
 
-        private IEnumerator MoveByStepsWithDelay(List<Vector2Int> path, GameObject modelViewFromMove)
+        private IEnumerator MoveByStepsWithDelay(List<Vector2Int> path, ModelView modelViewFromMove)
         {
-            if (path != null && path.Count != 0 && IsWalking && CountTurn > 0)
+
+            GridController.SetTypeInGrid(modelViewFromMove.transform.position, GridNode.TypeNode.SimplyNode);
+
+            if (path.Any() && IsWalking && _countStep > 0)
             {
-                --CountTurn;
                 foreach (var element in path)
                 {
-                    modelViewFromMove.transform.position = GridUtility.ConvertingPosition(element) + modelViewFromMove.transform.localScale / 2;
+                    if (_countStep < 0)
+                        break;
+
+                    modelViewFromMove.transform.position = GridController.ConvertingPosition(element) + modelViewFromMove.transform.localScale / 2;
                     yield return new WaitForSeconds(AnimationSetting.Instance.SpeedMove);
+
+                    _countStep--;
                 }
             }
+            
             IsWalking = false;
+
+            GridController.SetTypeInGrid(modelViewFromMove.transform.position, GridNode.TypeNode.Wall);
         }
     }
 }

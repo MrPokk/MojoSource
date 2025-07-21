@@ -10,7 +10,7 @@ namespace Game.Script.Component_Grid.Component_Pathfind
     {
         private HashSet<Vector2Int> _open;
         private HashSet<Vector2Int> _close;
-        
+
         private GridNode _current;
 
         private GridNode _endNode;
@@ -18,28 +18,13 @@ namespace Game.Script.Component_Grid.Component_Pathfind
 
         private GridNode[,] _grid;
 
-        private readonly static Vector2Int[] _neighborsOffset = 
+        public static List<Vector2Int> TryGetPathFind(GridNode[,] grid, Vector2Int start, Vector2Int end, in Vector2Int[] neighborsAll)
         {
-            Vector2Int.right,
-            Vector2Int.left,
-
-            Vector2Int.up,
-            Vector2Int.down,
-            
-            new Vector2Int(-1, -1),
-            new Vector2Int(-1, 1),
-            new Vector2Int(1, -1),
-            new Vector2Int(1, 1),
-        };
-
-
-
-        public static List<Vector2Int> TryGetPathFind(Vector2Int start, Vector2Int end)
-        {
-            return ValidatePath(start, end) ? new AStar().Find(start, end, GridUtility.GridModel.Array) : null;
+            return ValidatePath(start, end, grid) ? new AStar().Find(start, end, grid, neighborsAll) : null;
         }
 
-        private List<Vector2Int> Find(Vector2Int startNode, Vector2Int endNode, GridNode[,] grid)
+
+        private List<Vector2Int> Find(Vector2Int startNode, Vector2Int endNode, GridNode[,] grid, in Vector2Int[] neighborsAll)
         {
             _grid = grid.Clone() as GridNode[,];
 
@@ -70,11 +55,11 @@ namespace Game.Script.Component_Grid.Component_Pathfind
                     return GetPath(_endNode.Index);
                 }
 
-                var neighbors = GetIndexNeighbors(_current.Index);
+                var neighbors = GetIndexNeighbors(_current.Index, neighborsAll);
                 foreach (var neighbor in neighbors)
                 {
 
-                    GridNode neighborNode = _grid[neighbor.x, neighbor.y];
+                    var neighborNode = _grid[neighbor.x, neighbor.y];
 
                     int tentativeGCost = _current.GCost + CalculateHCost(_current.Index, neighbor);
                     if (tentativeGCost < neighborNode.GCost)
@@ -102,12 +87,12 @@ namespace Game.Script.Component_Grid.Component_Pathfind
         {
             var path = new List<Vector2Int>();
 
-            var currentNode = GridUtility.GetNodeByIndex(endNodeIndex, _grid);
+            var currentNode = GetNodeByIndex(endNodeIndex, _grid);
             path.Add(currentNode.Index);
 
             while (currentNode.IndexParent != Vector2Int.one * -1)
             {
-                var cameFromNode = GridUtility.GetNodeByIndex(currentNode.IndexParent, _grid);
+                var cameFromNode = GetNodeByIndex(currentNode.IndexParent, _grid);
                 path.Add(cameFromNode.Index);
                 currentNode = cameFromNode;
             }
@@ -117,15 +102,16 @@ namespace Game.Script.Component_Grid.Component_Pathfind
             return path;
         }
 
-        private List<Vector2Int> GetIndexNeighbors(Vector2Int currentNodeIndex)
+
+        private List<Vector2Int> GetIndexNeighbors(Vector2Int currentNodeIndex, in Vector2Int[] neighborsAll)
         {
             var neighborAll = new List<Vector2Int>();
 
-            foreach (var neighborsOffset in _neighborsOffset)
+            foreach (var neighborsOffset in neighborsAll)
             {
                 var neighborIndex = currentNodeIndex + neighborsOffset;
 
-                if (GridUtility.IsWithinGrid(neighborIndex, _grid) && IsNodeWalkable(neighborIndex, _grid))
+                if (IsWithinGrid(neighborIndex, _grid) && IsNodeWalkable(neighborIndex, _grid))
                     neighborAll.Add(neighborIndex);
             }
 
@@ -134,7 +120,7 @@ namespace Game.Script.Component_Grid.Component_Pathfind
 
         private bool IsNodeWalkable(Vector2Int indexNode, GridNode[,] grid)
         {
-            var gridNode = GridUtility.GetNodeByIndex(indexNode, grid);
+            var gridNode = GetNodeByIndex(indexNode, grid);
             if (gridNode.Type == GridNode.TypeNode.SimplyNode)
             {
                 return true;
@@ -148,10 +134,10 @@ namespace Game.Script.Component_Grid.Component_Pathfind
 
         private GridNode GetLowerFCost(HashSet<Vector2Int> nodeArray)
         {
-            var indexLowerNode = GridUtility.GetNodeByIndex(nodeArray.First(), _grid);
+            var indexLowerNode = GetNodeByIndex(nodeArray.First(), _grid);
             foreach (var nodeIndex in nodeArray)
             {
-                var nodeElement = GridUtility.GetNodeByIndex(nodeIndex, _grid);
+                var nodeElement = GetNodeByIndex(nodeIndex, _grid);
 
                 if (nodeElement.FCost < indexLowerNode.FCost)
                     indexLowerNode = nodeElement;

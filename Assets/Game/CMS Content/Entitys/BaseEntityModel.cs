@@ -7,7 +7,7 @@ namespace Game.CMS_Content.Entitys
     public abstract class BaseEntityModel : CMSEntity
     {
         public BaseEntityComponent Components { get; protected set; }
-        protected GameObject ViewObject => Components.View.ViewModel.gameObject;
+        protected ModelView View => Components.View.ViewModel;
         protected BaseEntityModel()
         {
             Define<ViewComponent>(out var viewComponent);

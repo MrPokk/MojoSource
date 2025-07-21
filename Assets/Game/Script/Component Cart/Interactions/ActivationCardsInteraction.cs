@@ -22,7 +22,7 @@ namespace Game.Script.Component_Cart.Interactions
                 var allCards = cardInsideComponent.GetAllCard();
                 foreach (var card in allCards)
                 {
-                    card.Components.ActionCardComponent.AbilityCard?.Invoke(entity);
+                    card.Components.Action.AbilityCard?.Invoke(entity);
                 }
                 cardInsideComponent.RemoveAllCard();
             }

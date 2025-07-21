@@ -11,12 +11,11 @@ namespace Game.CMS_Content.Cards.Type
         public DamageCard()
         {
             Define(out MultiplierComponent multilineComponent);
-            Define(out ViewComponent viewComponent);
-            viewComponent.LoadView<BaseCardView>(PathResources.CARD);
             multilineComponent.Init(2);
 
-            Components.PriorityCardComponent.Init(Priority.Medium  );
-            Components.ActionCardComponent.Init(AbilityCard);
+            Components.View.LoadView<BaseCardView>(PathResources.CARD_BASE);
+            Components.Priority.Init(Priority.Medium  );
+            Components.Action.Init(AbilityCard);
         }
 
         private void AbilityCard(CMSEntity sourceEntity)

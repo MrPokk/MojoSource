@@ -10,33 +10,38 @@ namespace Game.CMS_Content.Cards
         {
             Define<ActionComponent>(out var actionCardComponent);
             Define<PriorityCardComponent>(out var priorityCardComponent);
+            Define<ViewComponent>(out var viewComponent);
             Define<DraggableComponent>(out var draggableComponent);
+            
+            draggableComponent.Drag = Drag;
+            draggableComponent.Drop = Drop;
 
-            draggableComponent.Drag = dragObject => {
-                dragObject.transform.position = MouseInteraction.MousePose;
-
-                if (dragObject is BaseCardView baseCardView)
-                    GameData<Main>.Boot.HandCards.Remove(baseCardView);
-            };
-
-            draggableComponent.Drop = dragObject => {
-                if (dragObject is BaseCardView baseCardView)
-                    GameData<Main>.Boot.HandCards.Add(baseCardView);
-            };
-
-            Components = new BaseCardComponent(actionCardComponent, priorityCardComponent);
+            Components = new BaseCardComponent(actionCardComponent, priorityCardComponent, viewComponent);
         }
+        private void Drag(ModelView dragObject)
+        {
+            dragObject.transform.position = MouseInteraction.MousePose;
 
-
-
+            if (dragObject is BaseCardView baseCardView)
+                GameData<Main>.Boot.HandCards.Remove(baseCardView);
+        }
+        private void Drop(ModelView dragObject)
+        {
+            if (dragObject is BaseCardView baseCardView)
+                GameData<Main>.Boot.HandCards.Add(baseCardView);
+        }
+        
         public class BaseCardComponent : IComponent
         {
-            public readonly ActionComponent ActionCardComponent;
-            public readonly PriorityCardComponent PriorityCardComponent;
-            public BaseCardComponent(ActionComponent actionCard, PriorityCardComponent priorityCard)
+            public readonly ActionComponent Action;
+            public readonly PriorityCardComponent Priority;
+            public readonly ViewComponent View;
+
+            public BaseCardComponent(ActionComponent actionCard, PriorityCardComponent priorityCard, ViewComponent view)
             {
-                ActionCardComponent = actionCard;
-                PriorityCardComponent = priorityCard;
+                Action = actionCard;
+                Priority = priorityCard;
+                View = view;
             }
         }
     }

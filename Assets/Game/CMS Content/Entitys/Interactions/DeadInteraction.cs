@@ -1,5 +1,6 @@
 using Engin.Utility;
 using Game.CMS_Content.Entitys.Components;
+using Game.Script.Component_Grid.Component_Pathfind;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,6 +8,8 @@ namespace Game.CMS_Content.Entitys.Interactions
 {
     public class DeadInteraction : BaseInteraction, IEnterInNextTurn, IEnterInDead, IEnterInAttack
     {
+        public override Priority PriorityInteraction { get => Priority.High; }
+
         public void UpdateTurn()
         {
             UpdateDead();
@@ -29,9 +32,16 @@ namespace Game.CMS_Content.Entitys.Interactions
             }
             foreach (var entity in dealEntity)
             {
+                ResetGrid(entity);
+
                 CMS.Get<BaseEntityController>().DestroyEntity(entity);
             }
         }
-     
+        private void ResetGrid(ModelView entity)
+        {
+            entity.GetModel().GetComponent<MoveComponent>(out var moveComponent);
+            var position = moveComponent.GridController.ConvertingPosition(entity.transform.position);
+            moveComponent.GridController.SetTypeInGrid(position, GridNode.TypeNode.SimplyNode);
+        }
     }
 }

@@ -10,7 +10,7 @@ namespace Game.CMS_Content.Entitys.Components
     {
 
         private readonly List<BaseCardModel> _insideCard = new List<BaseCardModel>();
-
+        
         public IReadOnlyList<BaseCardModel> GetAllCard<T>() where T : BaseCardModel
         {
             return _insideCard.FindAll(card => card is T);
@@ -50,8 +50,8 @@ namespace Game.CMS_Content.Entitys.Components
         private void Sort()
         {
             _insideCard.Sort((card1, card2) =>
-                (int)card1.Components.PriorityCardComponent.Priority -
-                (int)card2.Components.PriorityCardComponent.Priority);
+                (int)card1.Components.Priority.Priority -
+                (int)card2.Components.Priority.Priority);
         }
     }
 }

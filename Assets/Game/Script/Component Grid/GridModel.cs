@@ -1,12 +1,12 @@
 using Game.Script.Component_Grid.Component_Pathfind;
 using UnityEngine;
-public class GridModel<TGridObject>
+public class GridModel
 {
 
     public Vector2Int Size { get; private set; }
     public float CellSize { get; private set; }
 
-    public TGridObject[,] Array { get; private set; } 
+    public GridNode[,] Array { get; private set; }
 
     public Vector2 PositionOrigin { get; private set; }
 
@@ -17,13 +17,14 @@ public class GridModel<TGridObject>
 
         PositionOrigin = positionOrigin;
 
-        Array = new TGridObject[size.x, size.y];
-    }
-    public void SetValue(Vector2Int XY, TGridObject value)
-    {
-        if (XY is { x: >= 0, y: >= 0 } && XY.x < Size.x && XY.y < Size.y)
+        Array = new GridNode[size.x, size.y];
+
+        for (int x = 0; x < size.x; x++)
         {
-            Array[XY.x, XY.y] = value;
+            for (int y = 0; y < size.y; y++)
+            {
+                Array[x, y] = new GridNode(new Vector2Int(x, y));
+            }
         }
     }
 

@@ -9,6 +9,7 @@ public abstract class PathResources
     
     public readonly static string ERORR_VIEW = $"{PREFABS}/ViewError";
 
+    public readonly static string CARD_BASE = $"{PREFABS}/BaseCardView/";
     public readonly static string CARD = $"{PREFABS}/Cards/";
     public readonly static string CARD_SPRITE = $"{PREFABS}/Cards/Sprites/";
 

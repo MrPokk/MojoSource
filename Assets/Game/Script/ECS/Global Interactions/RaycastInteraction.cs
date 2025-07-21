@@ -36,5 +36,7 @@ namespace Game.Script.Global_Interactions
             if (raycastingComponent != null && viewRaycast)
                 ReactionRaycast?.Invoke(viewRaycast);
         }
+        
+        
     }
 }

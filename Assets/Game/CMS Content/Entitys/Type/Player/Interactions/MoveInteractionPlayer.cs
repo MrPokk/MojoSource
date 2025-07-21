@@ -1,6 +1,5 @@
 using Game.CMS_Content.Entitys.Components;
 using Game.Script.Global_Interactions;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Game.CMS_Content.Entitys.Type.Player.Interactions
@@ -32,13 +31,15 @@ namespace Game.CMS_Content.Entitys.Type.Player.Interactions
         }
         private void SelectingGridNode(Vector2 mousePosition)
         {
-            var PlayerModel = _selectView.GetModel();
-            PlayerModel.GetComponent<MoveComponent>(out var moveComponent);
+            var playerModel = _selectView.GetModel();
+            playerModel.GetComponent<MoveComponent>(out var moveComponent);
 
-            if (GridUtility.GridMousePosition == PlayerModel.GetViewPosition2D().normalized)
+            var mousePositionGrid = moveComponent.GridController.GridMousePosition;
+            
+            if (mousePositionGrid == playerModel.GetViewPosition2D().normalized)
                 return;
 
-            moveComponent.MoveMethod?.Invoke(GridUtility.GridMousePosition);
+            moveComponent.MoveMethod?.Invoke(mousePositionGrid);
 
             _isSelect = false;
             MouseInteraction.OnClickDown -= SelectingGridNode;

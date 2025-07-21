@@ -8,11 +8,9 @@ namespace Game.CMS_Content.Cards.Type
     {
         public MirrorCard()
         {
-            Define(out ViewComponent viewComponent);
-            viewComponent.LoadView<BaseCardView>(PathResources.CARD);
-
-            Components.PriorityCardComponent.Init(Priority.High);
-            Components.ActionCardComponent.Init(AbilityCard);
+            Components.View.LoadView<BaseCardView>(PathResources.CARD_BASE);
+            Components.Priority.Init(Priority.High);
+            Components.Action.Init(AbilityCard);
         }
 
         private void AbilityCard(CMSEntity sourceEntity)
@@ -22,7 +20,7 @@ namespace Game.CMS_Content.Cards.Type
                 return;
             
             var damageCard = attackComponent.GetAllAttack().First();
-            damageCard.Components.ActionCardComponent.AbilityCard.Invoke(sourceEntity);
+            damageCard.Components.Action.AbilityCard.Invoke(sourceEntity);
         }
     }
 }

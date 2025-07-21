@@ -1,7 +1,4 @@
-using Game.CMS_Content.Entitys.Interactions;
 using System;
-using System.Collections.Generic;
-using UnityEngine;
 
 namespace Game.Script.ECS.Global_Interactions
 {
